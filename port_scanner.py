@@ -39,7 +39,7 @@ def scan_port(target, port):
 
 def scan_ports(target, ports):
     """Quét danh sách các port"""
-    print(f" Đang quét {len(ports)} ports trên {target}...\n")
+    print(f" Đang quét các ports trên {target}...\n")
 
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
