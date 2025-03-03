@@ -1,119 +1,134 @@
+import socket
 import requests
-from urllib.parse import urljoin, urlencode
+import threading
+from bs4 import BeautifulSoup
 
-# Danh sách payloads OWASP để kiểm tra lỗ hổng
-PAYLOADS = {
-    "SQL Injection": [
-        "' OR '1'='1", "' UNION SELECT null, version() --", "' OR sleep(5) --"
-    ],
-    "XSS": [
-        "<script>alert('XSS')</script>", "\"><img src=x onerror=alert(1)>"
-    ],
-    "LFI": [
-        "../../../../etc/passwd", "../windows/win.ini"
-    ],
-    "SSRF": [
-        "http://169.254.169.254/latest/meta-data/", "http://localhost/admin"
-    ],
-    "SSTI": [
-        "{{7*7}}", "#{7*7}", "<%= 7 * 7 %>"
-    ]
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
 }
 
-SECURITY_HEADERS = [
-    "Content-Security-Policy",
-    "X-Frame-Options",
-    "Strict-Transport-Security",
-    "X-Content-Type-Options",
-    "Referrer-Policy",
-    "Permissions-Policy"
+SQLI_ERRORS = [
+    "You have an error in your SQL syntax", "Warning: mysql_", "SQL syntax error",
+    "Unclosed quotation mark", "SQLSTATE["
 ]
 
-COMMON_FILES = ["robots.txt", "config.php", ".env", "debug"]
+COMMON_PORTS = {80, 443, 8080, 8443}
 
-ADMIN_PATHS = ["/admin", "/login", "/dashboard"]
+PAYLOADS = {
+    "SQL Injection": ["' OR '1'='1", "admin' --", "' UNION SELECT null, version() --"],
+    "XSS": ["<script>alert('XSS')</script>", "<img src='x' onerror='alert(1)'>"]
+}
 
+def scan_ports(target, port_range=range(1, 1025)):
+    open_ports = []
+    lock = threading.Lock()
 
-# Kiểm tra security headers
-def check_security_headers(url):
-    response = requests.get(url)
-    headers = response.headers
-    missing_headers = [h for h in SECURITY_HEADERS if h not in headers]
-    
-    if missing_headers:
-        print(f"⚠️ Thiếu security headers: {', '.join(missing_headers)}")
-    else:
-        print("✅ Security headers đầy đủ!")
+    def scan(port):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.3)
+                if s.connect_ex((target, port)) == 0:
+                    with lock:
+                        open_ports.append(port)
+        except Exception:
+            pass
 
-# Kiểm tra các lỗ hổng phổ biến
-def test_vulnerability(url, params):
-    print(f"\n🔍 Đang quét lỗ hổng trên {url}...")
-    
-    for vuln_type, payloads in PAYLOADS.items():
-        print(f"🔹 Đang kiểm tra {vuln_type}...")
-        for payload in payloads:
-            test_params = {key: payload for key in params.keys()}
-            test_url = f"{url}?{urlencode(test_params)}"
-            
-            try:
-                response = requests.get(test_url, timeout=5)
-                if is_vulnerable(response.text, vuln_type):
-                    print(f"⚠️ Phát hiện {vuln_type}: {test_url}")
-            except requests.exceptions.RequestException:
-                pass
+    threads = []
+    for port in port_range:
+        t = threading.Thread(target=scan, args=(port,))
+        t.start()
+        threads.append(t)
 
-# Xác định trang web có lỗ hổng hay không
-def is_vulnerable(response_text, vuln_type):
-    if vuln_type == "SQL Injection":
-        return "sql" in response_text.lower() or "syntax" in response_text.lower()
-    elif vuln_type == "XSS":
-        return "<script>alert('XSS')</script>" in response_text
-    elif vuln_type == "LFI":
-        return "root:x:" in response_text or "[extensions]" in response_text
-    elif vuln_type == "SSRF":
-        return "EC2" in response_text or "meta-data" in response_text
-    elif vuln_type == "SSTI":
-        return "49" in response_text
+    for t in threads:
+        t.join()
+
+    return open_ports
+
+def safe_request(url, method="GET", params=None, data=None):
+    try:
+        response = requests.request(method, url, headers=HEADERS, params=params, data=data, timeout=3)
+        return response
+    except requests.exceptions.RequestException:
+        return None
+
+def check_sqli(url, forms):
+    for payload in PAYLOADS["SQL Injection"]:
+        response = safe_request(url, params={"test": payload})
+        if response and any(error in response.text for error in SQLI_ERRORS):
+            print(f"[!] Phát hiện SQL Injection tại {url} với payload: {payload}")
+            return True
+        
+        for form in forms:
+            action = form.get("action")
+            inputs = form.find_all("input")
+            form_url = url if not action else f"{url}/{action}"
+            data = {input.get("name"): payload for input in inputs if input.get("name")}
+            response = safe_request(form_url, method="POST", data=data)
+            if response and any(error in response.text for error in SQLI_ERRORS):
+                print(f"[!] Phát hiện SQL Injection tại {form_url} với payload: {payload}")
+                return True
     return False
 
-# Kiểm tra file nhạy cảm
-def check_sensitive_files(url):
-    for file in COMMON_FILES:
-        full_url = urljoin(url, file)
-        response = requests.get(full_url)
-        if response.status_code == 200:
-            print(f"⚠️ Tệp nhạy cảm có thể truy cập: {full_url}")
+def check_xss(url, forms):
+    for payload in PAYLOADS["XSS"]:
+        response = safe_request(url, params={"test": payload})
+        if response and payload in response.text:
+            print(f"[!] Phát hiện XSS tại {url} với payload: {payload}")
+            return True
+        
+        for form in forms:
+            action = form.get("action")
+            inputs = form.find_all("input")
+            form_url = url if not action else f"{url}/{action}"
+            data = {input.get("name"): payload for input in inputs if input.get("name")}
+            response = safe_request(form_url, method="POST", data=data)
+            if response and payload in response.text:
+                print(f"[!] Phát hiện XSS tại {form_url} với payload: {payload}")
+                return True
+    return False
 
-# Kiểm tra các trang quản trị
-def check_admin_access(url):
-    for path in ADMIN_PATHS:
-        full_url = urljoin(url, path)
-        response = requests.get(full_url)
-        if response.status_code == 200:
-            print(f"⚠️ Trang quản trị có thể truy cập: {full_url}")
+def extract_forms(url):
+    response = safe_request(url)
+    if response:
+        soup = BeautifulSoup(response.text, "html.parser")
+        return soup.find_all("form")
+    return []
 
-# Kiểm tra bảo mật của Azure Storage
-def check_azure_storage():
-    azure_storage_urls = [
-        "https://example.blob.core.windows.net/container/",
-        "https://example.file.core.windows.net/share/"
-    ]
-    for url in azure_storage_urls:
-        response = requests.get(url)
-        if response.status_code == 200:
-            print(f"⚠️ Azure Storage {url} có thể public!")
+def detect_protocol(target):
+    if not target.startswith(("http://", "https://")):
+        test_http = f"http://{target}"
+        test_https = f"https://{target}"
+        if safe_request(test_http):
+            return test_http
+        elif safe_request(test_https):
+            return test_https
+        else:
+            print(f"[X] Không thể kết nối đến {target}")
+            return None
+    return target
+
+def run_web_scan(target):
+    target = detect_protocol(target)
+    if not target:
+        return
+    print(f"[+] Đang quét web tại: {target}")
+    forms = extract_forms(target)
+    check_sqli(target, forms)
+    check_xss(target, forms)
+    print(f"[+] Tìm thấy {len(forms)} form nhập liệu trên trang.")
+
+def scan_target():
+    target = input("Nhập IP hoặc domain để quét: ").strip()
+    open_ports = scan_ports(target)
+    print(f"[+] Các port mở trên {target}: {open_ports}" if open_ports else "[-] Không có port nào mở.")
+    is_web_found = any(port in COMMON_PORTS for port in open_ports)
+    if is_web_found:
+        run_web_scan(target)
+    else:
+        choice = input("Không phát hiện cổng web. Bạn có muốn ép quét web? (y/n): ").strip().lower()
+        if choice == "y":
+            target = input("Nhập URL trang web (bao gồm http/https): ").strip()
+            run_web_scan(target)
 
 if __name__ == "__main__":
-    target_url = input("Nhập URL web cần quét (VD: http://example.com): ")
-    check_security_headers(target_url)
-def run_web_scan(target_url):
-    print("\n=== Quét bảo mật Web ===")
-    check_security_headers(target_url)
-    test_vulnerability(target_url, {"id": "test"})
-    check_sensitive_files(target_url)
-    check_admin_access(target_url)
-    check_azure_storage()
-    print("\n✅ Quét hoàn thành!")
-    
-    
-    
+    scan_target()
