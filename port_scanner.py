@@ -22,7 +22,7 @@ COMMON_PORTS = {
 }
 
 def scan_port(target, port):
-    """Kiểm tra port có mở không và lấy thông tin dịch vụ"""
+    """Scanning"""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.settimeout(1)
@@ -38,8 +38,8 @@ def scan_port(target, port):
         return (port, "error", str(e))
 
 def scan_ports(target, ports):
-    """Quét danh sách các port"""
-    print(f" Đang quét các ports trên {target}...\n")
+    """Ports scanning"""
+    print(f" Scanning ports on {target}...\n")
 
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
@@ -55,14 +55,14 @@ def scan_ports(target, ports):
     open_ports = [port for port, state, _ in results if state == "open"]
     
     if not open_ports:
-        print(" Không tìm thấy port nào mở.")
+        print(" No open ports detected.")
     else:
-        print("\n Quét hoàn thành!")
+        print("\n Scanning completed!")
 
     return open_ports
 
 if __name__ == "__main__":
-    target_host = input("Nhập IP hoặc domain để quét: ")
+    target_host = input("Enter IP or Domain to scan: ")
     port_range = range(1, 1025)  # Quét từ 1 đến 1024
 
     scan_ports(target_host, port_range)

@@ -7,16 +7,16 @@ def show_banner():
     print(banner)
 
 def scan_target():
-    print("\n🔍 Tool Quét Tổng Hợp: Port Scan & Web Scan")
-    target = input("Nhập IP hoặc domain để quét: ").strip()
+    print("\n🔍 WEB VULNERABILITIES SCANNER")
+    target = input("Enter IP or Domain to scan: ").strip()
     
     # Quét port
     open_ports = port_scanner.scan_ports(target, range(1, 1025))  # Quét từ port 1 đến 1024
     
     if open_ports:
-        print(f"\n✅ Các port mở trên {target}: {open_ports}")
+        print(f"\n✅ Open ports on {target}: {open_ports}")
     else:
-        print(f"\n❌ Không tìm thấy port nào mở trên {target}.")
+        print(f"\n❌ Cannot find open ports on {target}.")
     
     # Kiểm tra cổng web
     WEB_PORTS = {80, 443, 8080, 8443}
@@ -24,21 +24,21 @@ def scan_target():
         if not target.startswith(("http://", "https://")):
             target = "http://" + target
         
-        print("\n=== Bắt đầu quét web ===")
+        print("\n=== Scanning Web ===")
         web_scanner.run_web_scan(target)
     else:
-        print("\n🚫 Không phát hiện cổng web server nào. Bỏ qua quét web.")
+        print("\n🚫 Cannot find any web server. Exiting.")
 
 def main():
     show_banner()
     while True:
         scan_target()
         
-        print("\n🔹 Lựa chọn:")
-        print("1. Tiếp tục quét")
-        print("2. Thoát")
+        print("\n🔹 Menu:")
+        print("1. Continue")
+        print("2. Exit")
         
-        choice = input("Nhập lựa chọn của bạn: ").strip()
+        choice = input("Choose your option: ").strip()
         if choice == "2":
             print(" Bye")
             break

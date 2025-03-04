@@ -20,7 +20,91 @@ PAYLOADS = {
     "XSS": ["<script>alert('XSS')</script>", "<img src='x' onerror='alert(1)'>"]
 }
 
-COMMON_PATHS = ["/login.php", "/admin", "/user/login", "/auth", "/signin", "/dashboard", "/controlpanel"]
+COMMON_PATHS = [
+    # 🏴‍☠️ Common Authentication & Login Paths
+    "/login", "/login.php", "/login.html", "/login.aspx", "/login.jsp", "/signin", "/auth",
+    "/user/login", "/user/signin", "/admin/login", "/admin/auth", "/account/login",
+    
+    # 🔐 Admin & Control Panels
+    "/admin", "/admin.php", "/admin.html", "/admin/login", "/admin/dashboard", "/admin/index",
+    "/admin/panel", "/adminconsole", "/controlpanel", "/backend", "/management", "/root",
+    "/secureadmin", "/moderator", "/administrator", "/sysadmin", "/staff", "/cms-admin",
+    
+    # 🛠️ CMS & Framework-Specific Paths
+    "/wp-login.php", "/wp-admin", "/wp-content", "/wp-json", "/drupal", "/drupal/login",
+    "/joomla/administrator", "/joomla/login", "/typo3/backend", "/phpmyadmin", "/pma",
+    "/dbadmin", "/myadmin", "/databaseadmin", "/plesk", "/cPanel", "/webadmin",
+    
+    # ⚙️ API & Developer Paths
+    "/api", "/api/v1/login", "/api/auth", "/api/token", "/api/admin", "/api/v1/user",
+    "/graphql", "/oauth", "/oauth/token", "/auth/oauth2", "/auth/jwt", "/jwt/token",
+    
+    # 📂 Sensitive File & Debug Paths
+    "/.git", "/.env", "/.htaccess", "/.htpasswd", "/config", "/config.php", "/config.json",
+    "/debug", "/debugger", "/error_log", "/logs", "/system.log", "/var/log",
+    
+    # 🔄 Forgotten or Test Paths
+    "/test", "/staging", "/beta", "/backup", "/old", "/temp", "/tmp", "/dev", "/qa",
+    
+    # 🔓 Common Dashboard URLs
+    "/dashboard", "/dashboard/login", "/user/dashboard", "/profile", "/settings", "/account",
+    
+    # 🏢 Enterprise Software Panels
+    "/zabbix", "/grafana", "/nagios", "/jenkins", "/jira", "/gitlab", "/confluence",
+    "/kibana", "/splunk", "/elastic", "/sonarqube",
+    
+    # 🏴‍☠️ Known Exploit Targets
+    "/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+    "/wp-content/plugins/revslider/temp/update_extract/revslider",
+    "/cgi-bin/test-cgi", "/cgi-bin/status", "/cgi-bin/admin", "/cgi-bin/awstats.pl",
+    "/cgi-bin/viewer.cgi", "/cgi-bin/jarrewrite", "/cgi-bin/php", "/cgi-bin/php5",
+
+    # 🖼️ Public Upload Directories (User-Uploaded Files)
+    "/uploads", "/upload", "/file_upload", "/files", "/media", "/user_uploads",
+    "/images/uploads", "/profile_pics", "/avatars", "/content/uploads",
+    "/data/uploads", "/public/uploads", "/assets/uploads",
+
+    "/login.php", "/admin", "/user/login", "/auth", "/signin", "/dashboard", "/controlpanel",
+    "/zabbix", "/zabbix/index.php", "/zabbix/setup.php", "/zabbix/api_jsonrpc.php",
+    "/zabbix/zabbix.php?action=dashboard.view", "/zabbix/jsrpc.php",
+    "/upload", "/file/upload", "/uploads", "/admin/upload", "/api/upload",
+    "/aws/cloudwatch", "/aws/xray", "/aws/monitoring", "/aws/health",
+    "/azure/monitor", "/azure/loganalytics", "/azure/applicationinsights", "/azure/securitycenter",
+    "/prometheus", "/prometheus/graph", "/prometheus/alerts", "/prometheus/status","/messages", "/view/messages", "/user/messages", "/inbox", "/admin/messages","/view_messages.php",
+    
+    # 🗂️ Admin & Secure Upload Areas
+    "/admin/uploads", "/admin/upload", "/secure/uploads", "/private/uploads",
+    "/protected/uploads", "/backend/uploads", "/root/uploads",
+    
+    # 📂 API & Developer Upload Paths
+    "/api/upload", "/api/uploads", "/upload-api", "/rest/upload", "/v1/upload",
+    "/api/v1/uploads", "/upload/file", "/upload_image", "/upload/photo",
+    
+    # 📸 CMS-Specific Uploads (WordPress, Joomla, Drupal, etc.)
+    "/wp-content/uploads", "/wp-admin/upload.php", "/joomla/media/uploads",
+    "/drupal/sites/default/files", "/typo3/uploads", "/storage/uploads",
+    
+    # 🔄 Temporary or Backup Uploads
+    "/temp/uploads", "/tmp/uploads", "/backup/uploads", "/old/uploads", "/staging/uploads",
+    "/cache/uploads", "/logs/uploads",
+    
+    # 🎥 Video & Document Uploads
+    "/videos/uploads", "/documents/uploads", "/docs/uploads", "/pdf/uploads",
+    "/music/uploads", "/audio/uploads",
+    
+    # 🖥️ FTP & File Management Uploads
+    "/ftp/uploads", "/filemanager/upload", "/browser/upload", "/webdav/uploads",
+    
+    # ⚠️ Known Exploitable Upload Paths
+    "/cgi-bin/upload.cgi", "/upload.php", "/upload.jsp", "/upload.asp", "/upload.aspx",
+    "/upload_handler.php", "/upload_file.php", "/ajax/upload", "/file/upload",
+    "/uploads/user_images/", "/uploads/temp/", "/uploads/raw/",
+    
+    # 🏴‍☠️ Dangerous Testing Uploads
+    "/uploads/shell.php", "/uploads/shell.jsp", "/uploads/shell.asp", "/uploads/shell.aspx",
+    "/uploads/rce.php", "/uploads/malware.exe", "/uploads/webshell/",
+    "/uploads/tmp/shell.php", "/uploads/temp/shell.php"
+]
 
 def scan_ports(target, port_range=range(1, 1025)):
     open_ports = []
@@ -58,7 +142,7 @@ def check_sqli(url, forms):
     for payload in PAYLOADS["SQL Injection"]:
         response = safe_request(url, params={"test": payload})
         if response and any(error in response.text for error in SQLI_ERRORS):
-            print(f"[!] Phát hiện SQL Injection tại {url} với payload: {payload}")
+            print(f"[!] Found SQL Injection at {url} with payload: {payload}")
             return True
         
         for form in forms:
@@ -68,7 +152,7 @@ def check_sqli(url, forms):
             data = {input.get("name"): payload for input in inputs if input.get("name")}
             response = safe_request(form_url, method="POST", data=data)
             if response and any(error in response.text for error in SQLI_ERRORS):
-                print(f"[!] Phát hiện SQL Injection tại {form_url} với payload: {payload}")
+                print(f"[!] Found SQL Injection at {form_url} with payload: {payload}")
                 return True
     return False
 
@@ -76,7 +160,7 @@ def check_xss(url, forms):
     for payload in PAYLOADS["XSS"]:
         response = safe_request(url, params={"test": payload})
         if response and payload in response.text:
-            print(f"[!] Phát hiện XSS tại {url} với payload: {payload}")
+            print(f"[!] Found XSS at {url} with payload: {payload}")
             return True
         
         for form in forms:
@@ -86,7 +170,7 @@ def check_xss(url, forms):
             data = {input.get("name"): payload for input in inputs if input.get("name")}
             response = safe_request(form_url, method="POST", data=data)
             if response and payload in response.text:
-                print(f"[!] Phát hiện XSS tại {form_url} với payload: {payload}")
+                print(f"[!] Found XSS at {form_url} with payload: {payload}")
                 return True
     return False
 
@@ -106,61 +190,61 @@ def detect_protocol(target):
         elif safe_request(test_https):
             return test_https
         else:
-            print(f"[X] Không thể kết nối đến {target}")
+            print(f"[X] Cannot connect to {target}")
             return None
     return target
 
 def find_common_paths(target):
-    print("[+] Đang kiểm tra các đường dẫn phổ biến...")
+    print("[+] Checking common paths...")
     for path in COMMON_PATHS:
         full_url = f"{target}{path}"
         response = safe_request(full_url)
         if response and response.status_code == 200:
-            print(f"[+] Phát hiện đường dẫn: {full_url}")
+            print(f"[+] Path found: {full_url}")
     
     # Kiểm tra robots.txt
     robots_url = f"{target}/robots.txt"
     response = safe_request(robots_url)
     if response and response.status_code == 200:
-        print("[+] Tìm thấy robots.txt, kiểm tra các đường dẫn bị ẩn...")
+        print("[+] Found robots.txt, checking hidden paths...")
         for line in response.text.split("\n"):
             if "Disallow:" in line:
                 hidden_path = line.split(": ")[-1].strip()
                 full_hidden_url = f"{target}{hidden_path}"
-                print(f"[+] Đường dẫn từ robots.txt: {full_hidden_url}")
+                print(f"[+] Path from robots.txt: {full_hidden_url}")
     
     # Kiểm tra sitemap.xml
     sitemap_url = f"{target}/sitemap.xml"
     response = safe_request(sitemap_url)
     if response and response.status_code == 200:
-        print("[+] Tìm thấy sitemap.xml, trích xuất các URL...")
+        print("[+] Found sitemap.xml, extracting URL...")
         soup = BeautifulSoup(response.text, "xml")
         urls = soup.find_all("loc")
         for url in urls:
-            print(f"[+] URL từ sitemap: {url.text}")
+            print(f"[+] URL from sitemap: {url.text}")
 
 def run_web_scan(target):
     target = detect_protocol(target)
     if not target:
         return
-    print(f"[+] Quét web tại: {target}")
+    print(f"[+] Scanning web at: {target}")
     forms = extract_forms(target)
     check_sqli(target, forms)
     check_xss(target, forms)
     find_common_paths(target)
-    print(f"[+] Tìm thấy {len(forms)} form nhập liệu trên trang.")
+    print(f"[+] Found {len(forms)} form inserting.")
 
 def scan_target():
-    target = input("Nhập IP hoặc domain để quét: ").strip()
+    target = input("Enter IP or domain to scan: ").strip()
     open_ports = scan_ports(target)
-    print(f"[+] Các port mở trên {target}: {open_ports}" if open_ports else "[-] Không có port nào mở.")
+    print(f"[+] Open ports on {target}: {open_ports}" if open_ports else "[-] No open ports detected.")
     is_web_found = any(port in COMMON_PORTS for port in open_ports)
     if is_web_found:
         run_web_scan(target)
     else:
-        choice = input("Không phát hiện cổng web. Bạn có muốn ép quét web? (y/n): ").strip().lower()
+        choice = input("Cannot find web server. Do you want to force web scanning? (y/n): ").strip().lower()
         if choice == "y":
-            target = input("Nhập URL trang web (bao gồm http/https): ").strip()
+            target = input("Enter web URL (includes http/https): ").strip()
             run_web_scan(target)
 
 if __name__ == "__main__":
