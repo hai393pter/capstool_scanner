@@ -1,0 +1,858 @@
+2025-03-06 01:06:50,522 - SQL Injection Exploited with payload: ' UNION SELECT null, version() --
+2025-03-06 01:26:24,546 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002963DDA7460>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/57318dabbbf19d5b9e198df45666df67
+2025-03-06 01:26:28,612 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002963DDA7680>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/57318dabbbf19d5b9e198df45666df67
+2025-03-06 01:26:32,678 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002963DDA79B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/57318dabbbf19d5b9e198df45666df67
+2025-03-06 01:27:06,004 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:11,948 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:14,286 - SQL Injection Exploited with payload: ' OR '1'='1' --
+2025-03-06 01:33:14,496 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:14,919 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:15,130 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:15,551 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:15,973 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:16,395 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:17,021 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:18,505 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:33:19,982 - SQL Injection Exploited with payload: ' OR '1'='1' --
+2025-03-06 01:33:20,198 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:39:24,544 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000177F23E5590>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/2a8e87b9e1b2154cb4891c3de82273d3/timeouts
+2025-03-06 01:40:15,717 - SQL Injection Exploited with payload: ' OR '1'='1
+2025-03-06 01:40:28,610 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002C9BB45A0D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/79087b8d098fa7d89c8f0d425379b9e8
+2025-03-06 01:40:32,671 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002C9BB441BA0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/79087b8d098fa7d89c8f0d425379b9e8
+2025-03-06 01:40:36,737 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002C9BB4410F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/79087b8d098fa7d89c8f0d425379b9e8
+2025-03-06 01:40:57,577 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 01:47:06,525 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002355BB57570>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/08b450af158fd01243015f270e6e7cc6
+2025-03-06 01:47:10,616 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002355BB57DF0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/08b450af158fd01243015f270e6e7cc6
+2025-03-06 01:47:14,678 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002355BB57BD0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/08b450af158fd01243015f270e6e7cc6
+2025-03-06 01:48:43,616 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 01:53:06,682 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 01:57:16,462 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 01:59:44,057 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:02:07,427 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:03:33,499 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADF240>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd/alert/text
+2025-03-06 02:03:37,574 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADEE00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd/alert/text
+2025-03-06 02:03:41,653 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADEAD0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd/alert/text
+2025-03-06 02:03:49,807 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADF680>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd
+2025-03-06 02:03:53,892 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADF8A0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd
+2025-03-06 02:03:57,976 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000145DDADFAC0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/c1ca365b23da44c6d24f5930c084e3cd
+2025-03-06 02:04:16,593 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:06:40,255 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:08:56,270 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:12:15,677 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:12:17,959 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 02:14:39,372 - SQL Injection Exploited with payload: admin' OR 1=1 #
+2025-03-06 02:14:56,157 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 02:21:18,261 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:23:14,840 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:25:13,203 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:26:11,091 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:28:39,771 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:29:12,199 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:31:55,394 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:32:23,939 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:37:24,931 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:38:44,901 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:39:28,551 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:39:42,952 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:40:21,549 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000189C84E1F90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cd73a782b9aac6313c2bb7ffb3b19720
+2025-03-06 02:40:25,643 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000189C84E1E50>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cd73a782b9aac6313c2bb7ffb3b19720
+2025-03-06 02:40:29,714 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000189C84FCE90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/cd73a782b9aac6313c2bb7ffb3b19720
+2025-03-06 02:41:18,901 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:41:49,285 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:43:29,158 - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002024E1EA0D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/010a48a560ffce4d51c7871e30311bc6
+2025-03-06 02:43:33,242 - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002024E1EA5D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/010a48a560ffce4d51c7871e30311bc6
+2025-03-06 02:43:37,324 - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000002024E1C03E0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it')': /session/010a48a560ffce4d51c7871e30311bc6
+2025-03-06 02:43:56,578 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:53:34,705 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 02:53:34,706 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 02:54:42,466 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 02:54:42,467 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 02:56:02,740 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:57:54,287 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 02:58:41,337 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 02:59:45,535 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:01:08,786 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:03:52,394 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:08:33,542 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:08:33,942 - Task exception was never retrieved
+future: <Task finished name='Task-74' coro=<Browser.close() done, defined at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser.py:183> exception=SystemExit(0)>
+Traceback (most recent call last):
+  File "E:\web_scan_tool\auto_pentest.py", line 332, in <module>
+    scan_xss_and_continue()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\auto_pentest.py", line 312, in scan_xss_and_continue
+    auto_exploit(target_url, "XSS", XSS_PAYLOADS)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\auto_pentest.py", line 297, in auto_exploit
+    if auto_login_and_exploit_xss(playwright, login_url, userinfo_url, "admin' OR 1=1 #", payload):
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\auto_pentest.py", line 279, in auto_login_and_exploit_xss
+    browser.close()
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 14231, in close
+    return mapping.from_maybe_impl(self._sync(self._impl_obj.close(reason=reason)))
+                                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 113, in _sync
+    self._dispatcher_fiber.switch()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_context_manager.py", line 56, in greenlet_main
+    self._loop.run_until_complete(self._connection.run_as_sync())
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2040, in _run_once
+    handle._run()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser.py", line 189, in close
+    await self._channel.send("close", {"reason": reason})
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 526, in wrap_api_call
+    return await cb()
+           ^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 88, in _inner_send
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 453, in dispatch
+    g.switch(self._replace_guids_with_channels(params))
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 222, in handle_dialog
+    time.sleep(10)  # Gi\u1eef h\u1ed9p tho\u1ea1i alert trong 10 giây
+    ~~~~~~~~~~^^^^
+  File "E:\web_scan_tool\auto_pentest.py", line 35, in signal_handler
+    sys.exit(0)
+    ~~~~~~~~^^^
+SystemExit: 0
+2025-03-06 03:11:40,239 - Task exception was never retrieved
+future: <Task finished name='Task-37' coro=<Page.close() done, defined at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py:799> exception=SystemExit(0)>
+Traceback (most recent call last):
+  File "E:\web_scan_tool\auto_pentest.py", line 261, in auto_login_and_exploit_xss
+    with open("xss_results.txt", "a") as f:
+            ^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 9835, in close
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.close(runBeforeUnload=run_before_unload, reason=reason)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 113, in _sync
+    self._dispatcher_fiber.switch()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_context_manager.py", line 56, in greenlet_main
+    self._loop.run_until_complete(self._connection.run_as_sync())
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2040, in _run_once
+    handle._run()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py", line 803, in close
+    await self._channel.send("close", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 526, in wrap_api_call
+    return await cb()
+           ^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 88, in _inner_send
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 453, in dispatch
+    g.switch(self._replace_guids_with_channels(params))
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 222, in handle_dialog
+    alert_message[0] = dialog.message
+    ^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\auto_pentest.py", line 35, in signal_handler
+    sys.exit(0)
+    ~~~~~~~~^^^
+SystemExit: 0
+2025-03-06 03:11:40,243 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:12:24,099 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 227, in handle_dialog
+    dialog.accept()  # \u0110óng h\u1ed9p tho\u1ea1i alert sau 10 giây
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 7227, in accept
+    self._sync(self._impl_obj.accept(promptText=prompt_text))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_dialog.py", line 51, in accept
+    await self._channel.send("accept", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Dialog.accept: Protocol error (Page.handleJavaScriptDialog): No dialog is showing
+2025-03-06 03:12:41,764 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:12:41,765 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:14:10,570 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:14:10,570 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:16:27,151 - Task exception was never retrieved
+future: <Task finished name='Task-38' coro=<Page.close() done, defined at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py:799> exception=SystemExit(0)>
+Traceback (most recent call last):
+  File "E:\web_scan_tool\auto_pentest.py", line 304, in auto_login_and_exploit_xss
+    page.close()
+    ~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 9835, in close
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.close(runBeforeUnload=run_before_unload, reason=reason)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 113, in _sync
+    self._dispatcher_fiber.switch()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_context_manager.py", line 56, in greenlet_main
+    self._loop.run_until_complete(self._connection.run_as_sync())
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 712, in run_until_complete
+    self.run_forever()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 683, in run_forever
+    self._run_once()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 2040, in _run_once
+    handle._run()
+    ~~~~~~~~~~~^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py", line 803, in close
+    await self._channel.send("close", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 526, in wrap_api_call
+    return await cb()
+           ^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 88, in _inner_send
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 453, in dispatch
+    g.switch(self._replace_guids_with_channels(params))
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 259, in handle_dialog
+    time.sleep(10)  # Gi\u1eef h\u1ed9p tho\u1ea1i alert trong 10 giây
+    ~~~~~~~~~~^^^^
+  File "E:\web_scan_tool\auto_pentest.py", line 35, in signal_handler
+    sys.exit(0)
+    ~~~~~~~~^^^
+SystemExit: 0
+2025-03-06 03:16:27,154 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:18:17,602 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:18:49,854 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:19:14,162 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-06 03:22:38,639 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:23:28,732 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:27:04,229 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:29:09,098 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:29:55,338 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:32:36,584 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:34:24,613 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:34:42,582 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:35:09,245 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:35:44,951 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:36:03,176 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:40:37,072 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:42:34,927 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:45:18,205 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:45:55,749 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:50:31,574 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:50:56,536 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:54:05,814 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:54:59,558 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:55:41,397 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 03:57:23,190 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-06 03:58:21,504 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 04:05:46,646 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 291, in handle_dialog
+    dialog.accept()
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 7227, in accept
+    self._sync(self._impl_obj.accept(promptText=prompt_text))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_dialog.py", line 51, in accept
+    await self._channel.send("accept", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: Dialog.accept: Target page, context or browser has been closed
+2025-03-06 04:06:06,627 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 291, in handle_dialog
+    dialog.accept()
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 7227, in accept
+    self._sync(self._impl_obj.accept(promptText=prompt_text))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_dialog.py", line 51, in accept
+    await self._channel.send("accept", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: Dialog.accept: Target page, context or browser has been closed
+2025-03-06 04:06:38,154 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 04:11:10,908 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 297, in handle_dialog
+    dialog.accept()
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 7227, in accept
+    self._sync(self._impl_obj.accept(promptText=prompt_text))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_dialog.py", line 51, in accept
+    await self._channel.send("accept", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Dialog.accept: Protocol error (Page.handleJavaScriptDialog): No dialog is showing
+2025-03-06 04:11:10,914 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\auto_pentest.py", line 297, in handle_dialog
+    dialog.accept()
+    ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 7227, in accept
+    self._sync(self._impl_obj.accept(promptText=prompt_text))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_dialog.py", line 51, in accept
+    await self._channel.send("accept", locals_to_params(locals()))
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Dialog.accept: Protocol error (Page.handleJavaScriptDialog): No dialog is showing
+2025-03-06 04:11:20,920 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-06 04:15:38,686 - Stored XSS Exploited with payload: <script>alert(1)</script>
+2025-03-07 06:04:22,444 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-07 06:06:32,254 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-07 06:08:28,405 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-07 06:08:28,406 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-07 06:10:12,379 - Stored XSS may have been exploited with payload: <script>alert(1)</script>
+2025-03-07 06:12:10,455 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\XSS_auto.py", line 65, in handle_dialog
+    page.evaluate("""
+    ~~~~~~~~~~~~~^^^^
+        () => {
+        ^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    """)
+    ^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 8530, in evaluate
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py", line 467, in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_frame.py", line 278, in evaluate
+    await self._channel.send(
+    ...<5 lines>...
+    )
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: Page.evaluate: Target page, context or browser has been closed
+2025-03-07 06:12:39,939 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-07 06:12:50,783 - Exception in callback SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111
+handle: <Handle SyncBase._sync.<locals>.<lambda>() at E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py:111>
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.752.0_x64__qbz5n2kfra8p0\Lib\asyncio\events.py", line 89, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 111, in <lambda>
+    task.add_done_callback(lambda _: g_self.switch())
+                                     ~~~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 444, in _listener_with_error_handler_attached
+    potential_future = listener(params)
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 166, in <lambda>
+    "dialog", lambda params: self._on_dialog(from_channel(params["dialog"]))
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_browser_context.py", line 683, in _on_dialog
+    has_listeners = page.emit(Page.Events.Dialog, dialog) or has_listeners
+                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 212, in emit
+    handled = self._call_handlers(event, args, kwargs)
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 188, in _call_handlers
+    self._emit_run(f, args, kwargs)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 79, in _emit_run
+    self.emit("error", exc)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 68, in emit
+    return super().emit(event, *args, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 215, in emit
+    self._emit_handle_potential_error(event, args[0] if args else None)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\base.py", line 173, in _emit_handle_potential_error
+    raise error
+  File "E:\web_scan_tool\venv\Lib\site-packages\pyee\asyncio.py", line 77, in _emit_run
+    coro: Any = f(*args, **kwargs)
+                ~^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_impl_to_api_mapping.py", line 123, in wrapper_func
+    return handler(
+        *list(map(lambda a: self.from_maybe_impl(a), args))[:arg_count]
+    )
+  File "E:\web_scan_tool\XSS_auto.py", line 65, in handle_dialog
+    page.evaluate("""
+    ~~~~~~~~~~~~~^^^^
+        () => {
+        ^^^^^^^
+    ...<7 lines>...
+        }
+        ^
+    """)
+    ^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\sync_api\_generated.py", line 8530, in evaluate
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.evaluate(expression=expression, arg=mapping.to_impl(arg))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_page.py", line 467, in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_frame.py", line 278, in evaluate
+    await self._channel.send(
+    ...<5 lines>...
+    )
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 61, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "E:\web_scan_tool\venv\Lib\site-packages\playwright\_impl\_connection.py", line 528, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TargetClosedError: Page.evaluate: Target page, context or browser has been closed
+2025-03-07 06:13:30,833 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed

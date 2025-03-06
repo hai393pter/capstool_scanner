@@ -1,0 +1,3 @@
+Exploited: http://testphp.vulnweb.com/userinfo.php
+Exploited: http://testphp.vulnweb.com/userinfo.php
+Exploited: http://testphp.vulnweb.com/userinfo.php
