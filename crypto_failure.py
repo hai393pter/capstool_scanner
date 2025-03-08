@@ -1,198 +1,114 @@
 import requests
-import ssl
-import sys
-import os
-from urllib.parse import urljoin
-from datetime import datetime
 import argparse
-from typing import List, Optional, Dict
-import base64
-import jwt  # Thư viện để decode JWT, cần cài: pip install pyjwt
+from urllib.parse import urlparse
+from colorama import init, Fore
+import hashlib
+import ssl
 import socket
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-# Tạo file log để ghi kết quả
-def log_result(message: str, log_file: str = "pentest_crypto_log.txt"):
-    """Ghi kết quả vào file log với timestamp."""
-    with open(log_file, "a", encoding="utf-8") as f:
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        f.write(f"[{timestamp}] {message}\n")
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+init(autoreset=True)
 
-def load_wordlist(wordlist_path: str) -> list:
-    """Tải danh sách các đường dẫn từ file wordlist."""
-    try:
-        with open(wordlist_path, "r", encoding="utf-8") as f:
-            return [line.strip() for line in f if line.strip()]
-    except FileNotFoundError:
-        print(f"Error: Wordlist file {wordlist_path} not found.")
-        sys.exit(1)
+class CryptoFailureTester:
+    def __init__(self, url, cookie=None):
+        self.url = url
+        self.cookie = cookie
+        self.session = requests.Session()
+        if cookie:
+            self.session.cookies.update({"Cookie": cookie})
 
-def check_ssl_configuration(base_url: str) -> dict:
-    """Kiểm tra cấu hình SSL/TLS của server, xử lý lỗi NoneType và TLS 1.3."""
-    try:
-        # Test kết nối HTTPS
-        response = requests.get(base_url, verify=True, timeout=10)
-        if response.status_code == 200:
-            print(f"SSL/TLS connection successful for {base_url}")
-            log_result(f"SSL/TLS connection successful for {base_url}")
-        
-        # Kiểm tra chi tiết SSL/TLS bằng ssl module
-        context = ssl.create_default_context()
-        with context.wrap_socket(socket.socket(), server_hostname=base_url.replace("https://", "")) as s:
-            s.connect((base_url.replace("https://", ""), 443))
-            cert = s.getpeercert()
-        
-        # Kiểm tra cipher suite và protocol, xử lý NoneType
-        cipher_info = s.cipher()
-        cipher_suite = cipher_info[0] if cipher_info and isinstance(cipher_info, tuple) and len(cipher_info) > 0 else "Unknown cipher suite"
-        protocol_version = cipher_info[1] if cipher_info and isinstance(cipher_info, tuple) and len(cipher_info) > 1 else "Unknown protocol"
-        
-        # Lấy thông tin protocol từ socket, ưu tiên TLS 1.3
+    def send_request(self, target_url, method="GET", data=None):
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
         try:
-            protocol = s.version()
-            if protocol is None:
-                protocol = "Unknown protocol"
-            elif "TLSv1.3" in protocol or "TLS" in protocol:
-                protocol = "TLS 1.3"
-            elif "TLSv" in protocol:
-                protocol = protocol.replace("TLSv", "TLS ").strip()
+            if method == "POST":
+                response = self.session.post(target_url, headers=headers, data=data, verify=False)
             else:
-                protocol = "Unknown protocol"
-        except AttributeError:
-            protocol = "Unknown protocol"
+                response = self.session.get(target_url, headers=headers, verify=False)
+            return response.status_code, response.text, response.headers, response.url
+        except requests.exceptions.RequestException as e:
+            print(f"{Fore.RED}[!] Request failed: {e}")
+            return None, None, None, None
+
+    def check_protocol(self):
+        print(f"{Fore.YELLOW}[*] Checking protocol enforcement for: {self.url}")
+        http_url = self.url.replace("https://", "http://")
+        status, _, _, final_url = self.send_request(http_url)
+        if status and "https://" in final_url:
+            print(f"{Fore.GREEN}[+] HTTP redirected to HTTPS: {final_url}")
+        elif status:
+            print(f"{Fore.RED}[!] Site allows HTTP access: {final_url} - Data could be intercepted!")
+        parsed_url = urlparse(self.url)
+        hostname = parsed_url.hostname
+        port = parsed_url.port or 443
+        try:
+            context = ssl.create_default_context()
+            with socket.create_connection((hostname, port)) as sock:
+                with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+                    cipher = ssock.cipher()
+                    print(f"{Fore.GREEN}[+] TLS Cipher: {cipher[0]}, Version: {cipher[1]}, Strength: {cipher[2]} bits")
+                    if cipher[2] < 128:
+                        print(f"{Fore.RED}[!] Weak cipher strength (< 128 bits) detected!")
+        except Exception as e:
+            print(f"{Fore.RED}[!] SSL/TLS check failed: {e}")
+
+    def test_login_encryption(self, username="admin", password="password"):
+        print(f"{Fore.YELLOW}[*] Testing login encryption on: {self.url}/login.php")
+        target_url = f"{urlparse(self.url).scheme}://{urlparse(self.url).netloc}/login.php"
         
-        result = {
-            "tls_version": context.options if hasattr(context, "options") else "Unknown TLS context",
-            "cipher_suite": cipher_suite,
-            "protocol_version": protocol,
-            "valid": True
+        data = {"username": username, "password": password}
+        status, content, headers, _ = self.send_request(target_url, method="POST", data=data)
+        if status:
+            print(f"{Fore.GREEN}[+] Status: {status}")
+            print(f"{Fore.CYAN}[*] Headers: {headers}")
+            print(f"Response Snippet: {content[:200]}...")
+            
+            # Improved leak detection
+            md5_hash = hashlib.md5(password.encode()).hexdigest()
+            sha1_hash = hashlib.sha1(password.encode()).hexdigest()
+            if md5_hash in content:
+                print(f"{Fore.RED}[!] MD5 hash leak detected: {md5_hash}")
+            elif sha1_hash in content:
+                print(f"{Fore.RED}[!] SHA-1 hash leak detected: {sha1_hash}")
+            elif password in content and "password" not in content.lower().split(password)[0]:  # Avoid false positives from form
+                print(f"{Fore.RED}[!] Plain-text password leak detected: {password}")
+            # Check login success
+            if "form" not in content.lower() or "welcome" in content.lower():
+                print(f"{Fore.GREEN}[!] Possible login success with {username}:{password}")
+
+    def crack_hash(self, hash_value):
+        print(f"{Fore.YELLOW}[*] Attempting to crack hash: {hash_value}")
+        rainbow_table = {
+            "5f4dcc3b5aa765d61d8327deb882cf99": "password",
+            "d41d8cd98f00b204e9800998ecf8427e": "",
+            "a94a8fe5ccb19ba61c4c0873d391e987": "123456"
         }
-        print(f"SSL/TLS Configuration: TLS Version={result['tls_version']}, Cipher={result['cipher_suite']}, Protocol={result['protocol_version']}")
-        log_result(f"SSL/TLS Configuration: TLS Version={result['tls_version']}, Cipher={result['cipher_suite']}, Protocol={result['protocol_version']}")
-        
-        return result
-    except ssl.SSLError as e:
-        print(f"SSL/TLS Error: {e}")
-        log_result(f"SSL/TLS Error for {base_url}: {e}")
-        return {"valid": False, "error": str(e)}
-    except requests.RequestException as e:
-        print(f"Error checking SSL: {e}")
-        log_result(f"Error checking SSL for {base_url}: {e}")
-        return {"valid": False, "error": str(e)}
-    except Exception as e:
-        print(f"Unexpected SSL error: {e}")
-        log_result(f"Unexpected SSL error for {base_url}: {e}")
-        return {"valid": False, "error": str(e)}
-
-def check_http_vulnerability(base_url: str) -> bool:
-    """Kiểm tra xem server có chấp nhận HTTP không (dẫn đến truyền dữ liệu không mã hóa)."""
-    http_url = base_url.replace("https://", "http://")
-    try:
-        response = requests.get(http_url, verify=True, timeout=10, allow_redirects=True)
-        if response.status_code == 200:
-            print(f"CRITICAL: Server accepts HTTP at {http_url} - Data may be transmitted unencrypted!")
-            log_result(f"CRITICAL: Server accepts HTTP at {http_url} - Data may be transmitted unencrypted!")
-            return True
-        return False
-    except requests.RequestException:
-        return False
-
-def analyze_cookies_and_headers(base_url: str, endpoint: str, headers: Dict, cookies: Dict) -> None:
-    """Phân tích cookie và header để tìm dữ liệu không mã hóa."""
-    try:
-        url = urljoin(base_url, endpoint)
-        response = requests.get(url, headers=headers, cookies=cookies, verify=True, timeout=10, allow_redirects=True)
-        
-        if response.status_code == 200:
-            # Kiểm tra cookie
-            if cookies:
-                print(f"Cookies sent: {cookies}")
-                log_result(f"Cookies sent for {url}: {cookies}")
-                for cookie_name, cookie_value in cookies.items():
-                    try:
-                        # Thử decode Base64 hoặc JWT
-                        try:
-                            decoded = base64.b64decode(cookie_value).decode('utf-8', errors='ignore')
-                            print(f"WARNING: Cookie {cookie_name} may be Base64 encoded and unencrypted: {decoded}")
-                            log_result(f"WARNING: Cookie {cookie_name} may be Base64 encoded and unencrypted: {decoded}")
-                        except (base64.binascii.Error, UnicodeDecodeError):
-                            pass
-                        try:
-                            decoded_jwt = jwt.decode(cookie_value, options={"verify_signature": False})
-                            print(f"WARNING: Cookie {cookie_name} is a JWT and may contain unencrypted data: {decoded_jwt}")
-                            log_result(f"WARNING: Cookie {cookie_name} is a JWT and may contain unencrypted data: {decoded_jwt}")
-                        except jwt.InvalidTokenError:
-                            pass
-                    except Exception as e:
-                        print(f"Error decoding cookie {cookie_name}: {e}")
-                        log_result(f"Error decoding cookie {cookie_name} for {url}: {e}")
-
-            # Kiểm tra header response
-            for header_name, header_value in response.headers.items():
-                if "token" in header_name.lower() or "session" in header_name.lower():
-                    print(f"Header {header_name}: {header_value}")
-                    log_result(f"Header {header_name} for {url}: {header_value}")
-                    try:
-                        decoded = base64.b64decode(header_value).decode('utf-8', errors='ignore')
-                        print(f"WARNING: Header {header_name} may be Base64 encoded and unencrypted: {decoded}")
-                        log_result(f"WARNING: Header {header_name} may be Base64 encoded and unencrypted: {decoded}")
-                    except (base64.binascii.Error, UnicodeDecodeError):
-                        pass
+        if hash_value in rainbow_table:
+            print(f"{Fore.GREEN}[!] Hash cracked! Plain-text: {rainbow_table[hash_value]}")
         else:
-            print(f"Cannot analyze cookies/headers for {url}, status code: {response.status_code}")
-            log_result(f"Cannot analyze cookies/headers for {url}, status code: {response.status_code}")
-    except requests.RequestException as e:
-        print(f"Error analyzing cookies/headers: {e}")
-        log_result(f"Error analyzing cookies/headers for {url}: {e}")
-
-def test_cryptographic_failures(base_url: str, endpoints: List[str] = ["/", "/uploads/", "/admin/"], wordlist_path: Optional[str] = None):
-    """
-    Test Cryptographic Failures including SSL/TLS, HTTP vulnerability, and cookie/header analysis.
-    
-    Parameters:
-    - base_url: Base URL of the target (e.g., "https://capstoneprjfuhcm.id.vn")
-    - endpoints: List of endpoints to test for cookies/headers (default: ["/", "/uploads/", "/admin/"])
-    - wordlist_path: Path to wordlist file for additional endpoints (optional)
-    """
-    # Load wordlist if provided
-    additional_endpoints = load_wordlist(wordlist_path) if wordlist_path else []
-    all_endpoints = endpoints + additional_endpoints
-
-    # Configure headers and cookies for testing (public access)
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"}
-    cookies = {}
-
-    print(f"\nStarting Cryptographic Failures test on {base_url}...")
-    log_result(f"Starting Cryptographic Failures test on {base_url}")
-
-    # Check SSL/TLS configuration
-    ssl_result = check_ssl_configuration(base_url)
-    if not ssl_result["valid"]:
-        print(f"CRITICAL: SSL/TLS configuration failed for {base_url}")
-        log_result(f"CRITICAL: SSL/TLS configuration failed for {base_url}")
-
-    # Check HTTP vulnerability
-    if check_http_vulnerability(base_url):
-        print(f"CRITICAL: Server vulnerable to HTTP transmission - Data may be transmitted unencrypted!")
-        log_result(f"CRITICAL: Server vulnerable to HTTP transmission - Data may be transmitted unencrypted!")
-
-    # Analyze cookies and headers for each endpoint
-    for endpoint in all_endpoints:
-        analyze_cookies_and_headers(base_url, endpoint, headers, cookies)
-
-    print(f"\nCryptographic Failures test completed for {base_url}.")
-    log_result(f"Cryptographic Failures test completed for {base_url}")
+            print(f"{Fore.RED}[-] Hash not found in rainbow table. Try Hashcat or online tools.")
 
 def main():
-    # Argument parser for user input
-    parser = argparse.ArgumentParser(description="Pentest Tool for Cryptographic Failures")
-    parser.add_argument("--url", required=True, help="Base URL of the target (e.g., https://example.com)")
-    parser.add_argument("--endpoints", nargs="+", default=["/", "/uploads/", "/admin/"], help="Endpoints to test (space-separated)")
-    parser.add_argument("--wordlist", default=None, help="Path to wordlist file for additional endpoints")
-    
+    print(f"{Fore.BLUE}[*] Cryptographic Failures Tester by Grok 3 (xAI) - A02:2021]")
+    url = input(f"{Fore.YELLOW}[?] Enter target URL (e.g., https://capstoneprjfuhcm.id.vn): ").strip()
+    if not url:
+        print(f"{Fore.RED}[!] URL is required. Exiting...")
+        return
+    cookie = input(f"{Fore.YELLOW}[?] Enter session cookie (e.g., PHPSESSID=abc123, press Enter to skip): ").strip() or None
+
+    parser = argparse.ArgumentParser(description="Cryptographic Failures Testing Tool")
+    parser.add_argument("--protocol", action="store_true", help="Check protocol enforcement and cipher strength")
+    parser.add_argument("--login", action="store_true", help="Test login endpoint for encryption issues")
+    parser.add_argument("--hash", type=str, help="Crack a specific hash (e.g., MD5)")
     args = parser.parse_args()
 
-    # Run the test
-    test_cryptographic_failures(args.url, args.endpoints, args.wordlist)
+    tester = CryptoFailureTester(url, cookie)
+    if args.protocol:
+        tester.check_protocol()
+    if args.login:
+        tester.test_login_encryption()
+    if args.hash:
+        tester.crack_hash(args.hash)
 
 if __name__ == "__main__":
     main()
