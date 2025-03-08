@@ -89,12 +89,12 @@ class CryptoFailureTester:
             print(f"{Fore.RED}[-] Hash not found in rainbow table. Try Hashcat or online tools.")
 
 def main():
-    print(f"{Fore.BLUE}[*] Cryptographic Failures Tester by Grok 3 (xAI) - A02:2021]")
-    url = input(f"{Fore.YELLOW}[?] Enter target URL (e.g., https://capstoneprjfuhcm.id.vn): ").strip()
+    print(f"{Fore.BLUE}[*] Cryptographic Failures Tester")
+    url = input(f"{Fore.YELLOW}[?] Enter target URL: ").strip()
     if not url:
         print(f"{Fore.RED}[!] URL is required. Exiting...")
         return
-    cookie = input(f"{Fore.YELLOW}[?] Enter session cookie (e.g., PHPSESSID=abc123, press Enter to skip): ").strip() or None
+    cookie = input(f"{Fore.YELLOW}[?] Enter session cookie (press Enter to skip): ").strip() or None
 
     parser = argparse.ArgumentParser(description="Cryptographic Failures Testing Tool")
     parser.add_argument("--protocol", action="store_true", help="Check protocol enforcement and cipher strength")

