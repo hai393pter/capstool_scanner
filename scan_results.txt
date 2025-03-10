@@ -1,0 +1,8 @@
+[!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com
+[!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com
+[!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/login.php
+[!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/login.php
+[!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/guestbook.php
+[!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/guestbook.php
+[!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/search.php
+[!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/search.php
