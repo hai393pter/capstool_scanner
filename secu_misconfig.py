@@ -233,9 +233,8 @@ def generate_html_report():
     print("[*] HTML report generated: security_misconfig_report.html")
 
 # Hàm quét Security Misconfiguration
-def scan_security_misconfig(target_url):
+def scan_security_misconfig(target_url, proxy=None):
     global results
-    proxy = input("Enter proxy (e.g., http://localhost:8080) or press Enter to skip: ").strip() or None
     with sync_playwright() as playwright:
         check_security_misconfig(playwright, target_url, proxy)
     
@@ -245,36 +244,21 @@ def scan_security_misconfig(target_url):
         generate_html_report()
         print("[*] Scan results saved to security_misconfig_results.json and security_misconfig_report.html")
 
-# Hàm chính và menu
-def main():
-    print("=== Advanced Security Misconfiguration Scanner ===")
-    while True:
-        target_url = input("Enter target URL to scan (e.g., http://localhost:5000/): ")
-        if not target_url.startswith(('http://', 'https://')):
-            target_url = 'http://' + target_url
-        scan_security_misconfig(target_url)
-
-        print("\nScan completed!")
-        print("Would you like to scan another URL or exit?")
-        print("1. Scan another URL")
-        print("2. Exit")
-        choice = input("Enter your choice (1 or 2): ")
-
-        if choice == "2":
-            print("[*] Exiting program...")
-            if results:
-                generate_html_report()
-            sys.exit(0)
-        elif choice != "1":
-            print("[!] Invalid choice. Exiting program...")
-            sys.exit(0)
+# Hàm chính
+def main(target):
+    """
+    Main function to execute security misconfiguration scanning.
+    Args:
+        target (str): The URL to scan.
+    """
+    try:
+        print("=== Advanced Security Misconfiguration Scanner ===")
+        print(f"Scanning {target} for security misconfigurations...")
+        scan_security_misconfig(target)  # Call the actual scanning function
+        print("Security misconfiguration scan completed.")
+    except Exception as e:
+        print(f"Error in secu_misconfig: {e}")
 
 if __name__ == "__main__":
-    # Cài đặt BeautifulSoup và Jinja2 nếu chưa có
-    try:
-        import bs4
-        import jinja2
-    except ImportError:
-        print("[!] Installing required packages (beautifulsoup4, jinja2)...")
-        os.system("pip install beautifulsoup4 jinja2")
-    main()
+    target = input("Enter target URL to scan (e.g., http://localhost:5000/): ")
+    main(target)

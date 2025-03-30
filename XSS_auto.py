@@ -288,40 +288,39 @@ def auto_exploit(target, paths, payloads):
                 f.write(result + "\n")
         print("\n[*] Results saved to 'scan_results.txt'")
 
-# Menu chính
-def scan_xss_and_continue():
-    global stop_scanning, results_found
-    while True:
-        stop_scanning = False
-        results_found.clear()
+# Hàm chính
+def main(target):
+    """
+    Main function to execute XSS scanning.
+    Args:
+        target (str): The URL to scan.
+    """
+    try:
+        print("=== Advanced XSS Scanner ===")
+        print(f"Scanning {target} for XSS vulnerabilities...")
+        
+        # Ensure the target URL has a scheme (http:// or https://)
+        if not target.startswith(("http://", "https://")):
+            target = "http://" + target
 
-        target_url = input("Enter target URL to scan for XSS (e.g., https://example.com/): ").strip()
-        if not target_url.startswith(("http://", "https://")):
-            target_url = "http://" + target_url
+        # Scan for valid paths
+        valid_paths = scan_initial_paths(target)
 
-        valid_paths = scan_initial_paths(target_url)
-
-        if target_url not in valid_paths:
-            valid_paths.insert(0, target_url)
+        # Include the base URL in the paths to scan
+        if target not in valid_paths:
+            valid_paths.insert(0, target)
 
         if valid_paths:
             print(f"\n[*] Found {len(valid_paths)} valid paths: {valid_paths}")
-            auto_exploit(target_url, valid_paths, XSS_PAYLOADS)
+            auto_exploit(target, valid_paths, XSS_PAYLOADS)
         else:
             print("[!] No valid paths found. XSS scan skipped.")
 
-        print("\nScan completed!")
-        print("1. Scan another URL")
-        print("2. Exit")
-        choice = input("Choice (1 or 2): ").strip()
-        if choice != "1":
-            print("[*] Exiting...")
-            break
+        print("XSS scan completed!")
+    except Exception as e:
+        print(f"Error in XSS_auto: {e}")
 
 if __name__ == "__main__":
     print("[*] Starting XSS scanning tool...")
-    try:
-        scan_xss_and_continue()
-    except Exception as e:
-        print(f"[!] Fatal error: {e}")
-        sys.exit(1)
+    target = input("Enter target URL to scan for XSS (e.g., https://example.com/): ").strip()
+    main(target)

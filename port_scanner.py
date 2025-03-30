@@ -1,5 +1,6 @@
 import socket
 import concurrent.futures
+import re
 
 # Danh sách các dịch vụ phổ biến dựa trên cổng
 COMMON_PORTS = {
@@ -21,11 +22,18 @@ COMMON_PORTS = {
     3389: "RDP"
 }
 
+def clean_target(target):
+    """Remove http:// or https:// from the target and return the hostname."""
+    # Remove http:// or https:// and trailing slashes
+    target = re.sub(r'^https?://', '', target)
+    target = target.rstrip('/')
+    return target
+
 def scan_port(target, port):
     """Scanning"""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(1)
+            s.settimeout(2)  # Increased timeout to 2 seconds
             result = s.connect_ex((target, port))
             
             if result == 0:  # Port open
@@ -34,12 +42,14 @@ def scan_port(target, port):
             else:
                 return (port, "closed", "N/A")
 
+    except socket.gaierror as e:
+        return (port, "error", f"Failed to resolve hostname: {e}")
     except Exception as e:
         return (port, "error", str(e))
 
 def scan_ports(target, ports):
     """Ports scanning"""
-    print(f" Scanning ports on {target}...\n")
+    print(f"Scanning ports on {target}...\n")
 
     results = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
@@ -51,18 +61,35 @@ def scan_ports(target, ports):
     for port, state, service in results:
         if state == "open":
             print(f"{port:<8}{state:<10}{service:<20}")
+        elif state == "error":
+            print(f"{port:<8}{state:<10}{service:<20}")
 
     open_ports = [port for port, state, _ in results if state == "open"]
     
     if not open_ports:
-        print(" No open ports detected.")
+        print("No open ports detected.")
     else:
-        print("\n Scanning completed!")
+        print("\nScanning completed!")
 
     return open_ports
 
-if __name__ == "__main__":
-    target_host = input("Enter IP or Domain to scan: ")
-    port_range = range(1, 1025)  # Quét từ 1 đến 1024
+def main(target):
+    """
+    Main function to execute port scanning.
+    Args:
+        target (str): The IP or URL to scan.
+    Returns:
+        list: List of open ports.
+    """
+    try:
+        target = clean_target(target)  # Clean the target input
+        port_range = range(1, 1025)  # Quét từ 1 đến 1024
+        open_ports = scan_ports(target, port_range)
+        return open_ports
+    except Exception as e:
+        print(f"Error in port_scanner: {e}")
+        return []
 
-    scan_ports(target_host, port_range)
+if __name__ == "__main__":
+    target = input("Enter IP or URL to scan: ")
+    main(target)
