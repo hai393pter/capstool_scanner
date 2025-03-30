@@ -6,12 +6,12 @@ from collections import defaultdict
 
 COMMON_CREDENTIALS = [
     (user, password) for user in [
-        "admin", "Admin", "ADMIN", "aDmin", "adMin", "admIn", "admin1", "administrator",
+        "admin","superadmin", "Admin", "ADMIN", "aDmin", "adMin", "admIn", "admin1", "administrator",
         "root", "Root", "ROOT", "rOot", "roOt", "rooT", "root1",
         "user", "User", "USER", "uSer", "usEr", "useR", "user1",
         "test", "Test", "TEST", "tEst", "teSt", "tesT", "test1"
     ] for password in [
-        "admin", "password", "123456", "1234", "admin123", "letmein", "qwerty", "welcome",
+        "admin","user", "password", "123456", "1234", "admin123", "letmein", "qwerty", "welcome",
         "login", "123123", "admin@123", "superadmin", "123qwe", "123321", "password1", "pass123",
         "654321", "adminadmin", "root123", "admin2024", "trustno1", "secure", "123456789@Ab"
     ]

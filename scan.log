@@ -1,0 +1,14 @@
+2025-03-10 13:48:06,940 - [!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com
+2025-03-10 13:48:06,940 - [!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com
+2025-03-10 13:48:11,124 - [!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/login.php
+2025-03-10 13:48:11,124 - [!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/login.php
+2025-03-10 13:50:35,171 - [!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/guestbook.php
+2025-03-10 13:50:35,172 - [!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/guestbook.php
+2025-03-10 13:50:39,287 - [!!!] Potential Stored XSS found with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/search.php
+2025-03-10 13:50:39,287 - [!!!] DOM-based XSS triggered with payload '<script>alert('XSS')</script>' at http://testphp.vulnweb.com/search.php
+2025-03-10 13:52:52,286 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
+2025-03-10 14:00:01,698 - Future exception was never retrieved
+future: <Future finished exception=TargetClosedError('Target page, context or browser has been closed')>
+playwright._impl._errors.TargetClosedError: Target page, context or browser has been closed
